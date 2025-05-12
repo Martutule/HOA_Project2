@@ -1,0 +1,91 @@
+﻿@model HOA.Models.Payment
+@{
+    ViewData["Title"] = "Payment Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-4">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h2 class="mb-0">Payment Details</h2>
+                    <span class="badge bg-@(Model.Status == "Paid" ? "success" :
+                                         Model.Status == "Pending" ? "warning" :
+                                         Model.Status == "Partial" ? "info" : "danger")">
+                        @Model.Status
+                    </span>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h4 class="mb-0">@Model.ResidentName</h4>
+                            <p class="text-muted mb-0">Apartment: @Model.Apartment</p>
+                        </div>
+                        <div class="col-md-6 text-md-end">
+                            <h3 class="text-primary mb-0">$@Model.Amount.ToString("F2")</h3>
+                            <p class="text-muted mb-0">@Model.PaymentDate.ToString("MMMM dd, yyyy")</p>
+                        </div>
+                    </div>
+
+                    <div class="card bg-light mb-4">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="fw-bold d-block">Payment ID</label>
+                                        <p class="mb-0">#@Model.Id</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="fw-bold d-block">Payment Method</label>
+                                        <p class="mb-0">Online Transfer</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h4 class="mb-3">Payment Timeline</h4>
+
+                            <ul class="list-group mb-4">
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <span class="fw-bold">Created</span>
+                                        <p class="mb-0 text-muted">Payment record created</p>
+                                    </div>
+                                    <span>@Model.PaymentDate.AddDays(-3).ToString("MMM dd")</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <span class="fw-bold">Payment Date</span>
+                                        <p class="mb-0 text-muted">Date payment was processed</p>
+                                    </div>
+                                    <span>@Model.PaymentDate.ToString("MMM dd")</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <span class="fw-bold">Last Updated</span>
+                                        <p class="mb-0 text-muted">Last status update</p>
+                                    </div>
+                                    <span>@DateTime.Now.ToString("MMM dd")</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between mt-4">
+                        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                        <div>
+                            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary me-2">Edit</a>
+                            <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

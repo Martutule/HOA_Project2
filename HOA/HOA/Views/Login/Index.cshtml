@@ -1,0 +1,98 @@
+﻿@{
+    ViewBag.Title = "HOA - Login";
+    Layout = null; // Remove the layout to get rid of navbar
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - HOA Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/css/site.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .login-card {
+            margin-top: 3rem;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .card-header {
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            border-radius: 10px 10px 0 0 !important;
+            padding: 1.5rem;
+        }
+
+        .login-body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f8f9fa;
+        }
+    </style>
+</head>
+<body class="login-body">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-5">
+                <div class="card login-card">
+                    <div class="card-header">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <img src="/images/HOA_logo.jpg" alt="HOA Logo" class="img-fluid me-3" style="max-height: 50px;">
+                            <h2 class="mb-0">HOA Management</h2>
+                        </div>
+                    </div>
+                    <div class="card-body p-4">
+                        <h4 class="text-center mb-4">Login to Your Account</h4>
+                        <form id="loginForm">
+                            <div class="mb-3">
+                                <label for="username" class="form-label">Email Address</label>
+                                <input type="email" class="form-control" id="username" placeholder="Enter your email" />
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="password" placeholder="Enter your password" />
+                            </div>
+                            <!-- User Role Selection -->
+                            <div class="mb-3">
+                                <label for="userRole" class="form-label">Select Role</label>
+                                <select class="form-select" id="userRole">
+                                    <option value="" disabled selected>Select your role</option>
+                                    <option value="administrator">Administrator</option>
+                                    <option value="resident">Resident</option>
+                                </select>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="rememberMe" />
+                                    <label class="form-check-label" for="rememberMe">Remember me</label>
+                                </div>
+                                <a href="#" class="small">Forgot password?</a>
+                            </div>
+                            <button type="button" id="loginButton" class="btn btn-primary w-100">Login</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Add event listener to login button
+        document.getElementById('loginButton').addEventListener('click', function() {
+            // Redirect to dashboard without form validation
+            window.location.href = '/Home';
+        });
+    </script>
+</body>
+</html>

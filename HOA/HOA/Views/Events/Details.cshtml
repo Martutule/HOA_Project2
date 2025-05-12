@@ -1,0 +1,53 @@
+﻿@model HOA.Models.Event
+@{
+    ViewData["Title"] = "Event Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-4">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="mb-0">Event Details</h2>
+                </div>
+
+                @if (!string.IsNullOrEmpty(Model.ImagePath))
+                {
+                    <img src="@Model.ImagePath" alt="@Model.EventName" class="card-img-top" style="max-height: 300px; object-fit: cover;">
+                }
+
+                <div class="card-body p-4">
+                    <h3 class="mb-3" style="color: @Model.Color">@Model.EventName</h3>
+
+                    <dl class="row">
+                        <dt class="col-sm-4 fw-bold">@Html.DisplayNameFor(model => model.Description)</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.Description)</dd>
+
+                        <dt class="col-sm-4 fw-bold">@Html.DisplayNameFor(model => model.Location)</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.Location)</dd>
+
+                        <dt class="col-sm-4 fw-bold">@Html.DisplayNameFor(model => model.Date)</dt>
+                        <dd class="col-sm-8">@Model.Date.ToString("MMMM dd, yyyy at h:mm tt")</dd>
+
+                        <dt class="col-sm-4 fw-bold">@Html.DisplayNameFor(model => model.Color)</dt>
+                        <dd class="col-sm-8">
+                            <div class="d-flex align-items-center">
+                                <div class="color-sample me-2" style="width: 25px; height: 25px; background-color: @Model.Color; border-radius: 4px;"></div>
+                                @Model.Color
+                            </div>
+                        </dd>
+                    </dl>
+
+                    <div class="d-flex justify-content-between mt-4">
+                        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                        <div>
+                            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+                            <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger ms-2">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

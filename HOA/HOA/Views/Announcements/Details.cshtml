@@ -1,0 +1,36 @@
+﻿@model HOA.Models.Announcement
+@{
+    ViewData["Title"] = "Announcement Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container py-4">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="mb-0">Announcement Details</h2>
+                </div>
+                <div class="card-body p-4">
+                    <dl class="row">
+                        <dt class="col-sm-3 fw-bold">@Html.DisplayNameFor(model => model.Title)</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Title)</dd>
+
+                        <dt class="col-sm-3 fw-bold">@Html.DisplayNameFor(model => model.Description)</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Description)</dd>
+
+                        <dt class="col-sm-3 fw-bold">@Html.DisplayNameFor(model => model.Date)</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Date)</dd>
+                    </dl>
+                    <div class="d-flex justify-content-between mt-4">
+                        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                        <div>
+                            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+                            <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+```
