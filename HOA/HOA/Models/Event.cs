@@ -1,4 +1,7 @@
-﻿namespace HOA.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Identity;
+
+namespace HOA.Models
 {
     public class Event
     {
@@ -9,5 +12,6 @@
         public string Location { get; set; }
         public DateTime Date { get; set; }
         public string Color { get; set; }
+
     }
 }

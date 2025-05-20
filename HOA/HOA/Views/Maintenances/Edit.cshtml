@@ -1,4 +1,4 @@
-﻿@model HOA.Models.Maintenance
+﻿ @model HOA.Models.Maintenance
 @{
     ViewData["Title"] = "Edit Maintenance Request";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -41,7 +41,6 @@
                                     <label asp-for="Status" class="form-label fw-bold"></label>
                                     <select asp-for="Status" class="form-select">
                                         <option value="" disabled>Select status</option>
-                                        <option value="Pending">Pending</option>
                                         <option value="In Progress">In Progress</option>
                                         <option value="Completed">Completed</option>
                                         <option value="Canceled">Canceled</option>

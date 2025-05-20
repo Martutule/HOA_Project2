@@ -20,7 +20,7 @@
 </head>
 
 <body>
-   
+
     <!-- Page Header -->
     <header class="page-header">
         <h1>Payments Management</h1>
@@ -37,8 +37,10 @@
                 <input type="text" name="searchQuery" class="form-control" placeholder="Search by resident name..." value="@ViewData["SearchQuery"]" />
                 <button class="btn btn-outline-secondary" type="submit">Search</button>
             </form>
-
-            <a class="btn btn-primary mt-2 mt-md-0" asp-action="Create">Add Payment</a>
+            @if (User.IsInRole("Admin"))
+            {
+                <a class="btn btn-primary mt-2 mt-md-0" asp-action="Create">Add Payment</a>
+            }
         </div>
 
         <!-- Payments Table -->
@@ -76,11 +78,25 @@
                                 }
                                 <span class="badge @badgeClass">@Html.DisplayFor(modelItem => item.Status)</span>
                             </td> <!-- status: Paid, Overdue, Pending -->
-               
+
                             <td class="text-center">
-                                <a class="bi bi-pencil-square btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                                <a class="bi-card-list btn-sm btn-info" asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                                <a class="bi bi-trash btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <a class="bi bi-pencil-square btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+
+                                }
+
+                                <a class="bi-card-list btn-sm btn-info" asp-action="Details" asp-route-id="@item.Id">Details</a> 
+                                
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <a class="bi bi-trash btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                }
+
+                                @if (item.Status != "Paid")
+                                {
+                                    <a class="bi bi-coin btn btn-sm btn-primary" asp-action="PayNow" asp-route-id="@item.Id"> PayNow</a>
+                                }
                             </td>
                             
                         </tr>

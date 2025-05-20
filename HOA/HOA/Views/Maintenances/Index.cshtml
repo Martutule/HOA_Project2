@@ -36,8 +36,11 @@
                 <input type="text" name="searchQuery" class="form-control" placeholder="Search task..." value="@ViewData["SearchQuery"]" />
                 <button class="btn btn-outline-secondary" type="submit">Search</button>
             </form>
-
-            <a class="btn btn-primary mt-2 mt-md-0" asp-action="Create">Add new task</a>
+            
+            @if (User.IsInRole("Admin"))
+            {
+                <a class="btn btn-primary mt-2 mt-md-0" asp-action="Create">Add new task</a>
+            }
         </div>
 
         <!-- Maintenance Tasks Table -->
@@ -76,9 +79,18 @@
                             </td> 
                             <!-- status: In Progress, Completed, Delayed -->
                             <td class="text-center">
-                                <a class="bi bi-pencil-square btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                                <a class="bi-card-list btn-sm btn-info" asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                                <a class="bi bi-trash btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <a class="bi bi-pencil-square btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                                }
+
+                                <a class="bi-card-list btn-sm btn-info" asp-action="Details" asp-route-id="@item.Id">Details</a> 
+
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <a class="bi bi-trash btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                }
+
                             </td>
                         </tr>
                     }

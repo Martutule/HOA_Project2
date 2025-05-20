@@ -2,9 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using HOA.Models;
 using HOA.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HOA.Controllers
 {
+    [Authorize]
     public class PaymentsController : Controller
     {
         private IPaymentsService _paymentsService;
@@ -43,6 +45,38 @@ namespace HOA.Controllers
             return View(payment);
         }
 
+        [HttpGet]
+        public IActionResult PayNow(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var payment = _paymentsService.GetPaymentsById((int)id);
+
+            if (payment == null)
+            {
+                return NotFound();
+            }
+
+            return View(payment);
+        }
+
+        [HttpPost]
+        public IActionResult PayNowConfirmed(int id)
+        {
+            var payment = _paymentsService.GetPaymentsById(id);
+            if (payment == null)
+            {
+                return NotFound();
+            }
+            
+            _paymentsService.UpdatePaymentStatus(id, "Paid");
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [Authorize(Roles = "Admin")]
         // GET: Payments/Create
         public IActionResult Create()
         {
@@ -52,6 +86,7 @@ namespace HOA.Controllers
         // POST: Payments/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create([Bind("Id,ResidentName,Apartment,PaymentDate,Amount,Status")] Payment payment)
@@ -64,6 +99,7 @@ namespace HOA.Controllers
             return View(payment);
         }
 
+        [Authorize(Roles = "Admin")]
         // GET: Payments/Edit/5
         public IActionResult Edit(int? id)
         {
@@ -81,6 +117,7 @@ namespace HOA.Controllers
             return View(payment);
         }
 
+        [Authorize(Roles = "Admin")]
         // POST: Payments/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -115,6 +152,7 @@ namespace HOA.Controllers
             return View(payment);
         }
 
+        [Authorize(Roles = "Admin")]
         // GET: Payments/Delete/5
         public IActionResult Delete(int? id)
         {
@@ -133,6 +171,7 @@ namespace HOA.Controllers
             return View(payment);
         }
 
+        [Authorize(Roles = "Admin")]
         // POST: Payments/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

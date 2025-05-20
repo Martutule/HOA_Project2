@@ -1,6 +1,7 @@
 ﻿using HOA.Models;
 using HOA.Repositories.Interfaces;
 using HOA.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HOA.Services
 {

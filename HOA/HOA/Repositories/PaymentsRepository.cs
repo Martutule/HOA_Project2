@@ -13,5 +13,16 @@ namespace HOA.Repositories
         {
             _context.SaveChanges();
         }
+
+        public void UpdatePaymentStatus(int id, string state)
+        {
+            var payment = _context.Payments.FirstOrDefault(p => p.Id == id);
+
+            if (payment != null)
+            {
+                payment.Status = state;
+                _context.SaveChanges();
+            }
+        }
     }
 }

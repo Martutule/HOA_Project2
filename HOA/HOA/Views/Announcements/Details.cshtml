@@ -23,10 +23,13 @@
                     </dl>
                     <div class="d-flex justify-content-between mt-4">
                         <a asp-action="Index" class="btn btn-secondary">Back to List</a>
-                        <div>
-                            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
-                            <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a>
-                        </div>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <div>
+                                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+                                <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a>
+                            </div>
+                        }
                     </div>
                 </div>
             </div>

@@ -23,6 +23,22 @@
             <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
         </form>
     </div>
+    <div class="mb-3">
+        <h4>Your Role(s):</h4>
+        @if (Model.Roles != null && Model.Roles.Any())
+        {
+            <ul>
+                @foreach (var role in Model.Roles)
+                {
+                    <li>@role</li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p>No roles assigned.</p>
+        }
+    </div>
 </div>
 
 @section Scripts {

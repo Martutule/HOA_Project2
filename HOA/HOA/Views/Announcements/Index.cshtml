@@ -18,7 +18,7 @@
 </head>
 
 <body>
-     <!-- Page Header -->
+    <!-- Page Header -->
     <header class="page-header">
         <h1>Announcements</h1>
         <p>Stay up to date with the latest news and important updates from your HOA</p>
@@ -36,27 +36,40 @@
                 <button class="btn btn-outline-secondary" type="submit">Search</button>
             </form>
 
-            <a class="btn btn-primary mt-2 mt-md-0" asp-action="Create">Add new announcement</a>
+            @if (User.IsInRole("Admin"))
+            {
+                <a class="btn btn-primary mt-2 mt-md-0" asp-action="Create">Add new announcement</a>
+            }
+
         </div>
 
         <!-- Announcements List -->
         <div class="row g-4">
 
             <!-- All Announcement Cards -->
-    
+
             <div class="row g-4">
                 @foreach (var announcement in Model)
                 {
-                <!-- Use modulo operation to cycle through background classes -->
+                    <!-- Use modulo operation to cycle through background classes -->
                 <div class="col-md-6">
                     <div class="card announcement-card announcement-bg-@(announcement.Id % 4 + 1)">
                         <div class="card-body">
                             <h5 class="card-title">@Html.DisplayFor(modelItem => announcement.Title)</h5>
                             <h6 class="card-subtitle mb-2 text-muted">Posted on @announcement.Date</h6>
                             <p class="card-text">@Html.DisplayFor(modelItem => announcement.Description)</p>
-                            <a class="bi bi-pencil-square btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@announcement.Id">Edit</a> |
-                            <a class="bi-card-list btn-sm btn-info" asp-action="Details" asp-route-id="@announcement.Id">Details</a> |
-                            <a class="bi bi-trash btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@announcement.Id">Delete</a>
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <a class="bi bi-pencil-square btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@announcement.Id">Edit</a>
+                            }
+                            
+                            <a class="bi-card-list btn-sm btn-info" asp-action="Details" asp-route-id="@announcement.Id">Details</a> 
+                            
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <a class="bi bi-trash btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@announcement.Id">Delete</a>
+                            }
+
                         </div>
                     </div>
                 </div>

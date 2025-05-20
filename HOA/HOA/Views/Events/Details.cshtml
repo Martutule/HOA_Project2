@@ -14,7 +14,10 @@
 
                 @if (!string.IsNullOrEmpty(Model.ImagePath))
                 {
-                    <img src="@Model.ImagePath" alt="@Model.EventName" class="card-img-top" style="max-height: 300px; object-fit: cover;">
+                    <img src="Model.ImagePath"
+                         class="card-img-top"
+                         alt="Model.EventName"
+                         onerror="this.src='/images/default-image.jpg'">
                 }
 
                 <div class="card-body p-4">
@@ -41,10 +44,15 @@
 
                     <div class="d-flex justify-content-between mt-4">
                         <a asp-action="Index" class="btn btn-secondary">Back to List</a>
-                        <div>
-                            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
-                            <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger ms-2">Delete</a>
-                        </div>
+
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <div>
+                                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+                                <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger ms-2">Delete</a>
+                            </div>
+                        }
+                        
                     </div>
                 </div>
             </div>

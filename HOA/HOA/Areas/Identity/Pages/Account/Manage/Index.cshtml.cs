@@ -73,6 +73,8 @@ namespace HOA.Areas.Identity.Pages.Account.Manage
             };
         }
 
+        public IList<string> Roles { get; set; }
+
         public async Task<IActionResult> OnGetAsync()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -80,6 +82,8 @@ namespace HOA.Areas.Identity.Pages.Account.Manage
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
+
+            Roles = await _userManager.GetRolesAsync(user);
 
             await LoadAsync(user);
             return Page();
