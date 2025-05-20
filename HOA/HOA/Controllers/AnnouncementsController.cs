@@ -2,9 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using HOA.Models;
 using HOA.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HOA.Controllers
 {
+    [Authorize]
     public class AnnouncementsController : Controller
     {
         private IAnnouncementsService _announcementsService;
@@ -43,12 +45,14 @@ namespace HOA.Controllers
             return View(announcements);
         }
 
+        [Authorize(Roles = "Admin")]
         // GET: Announcements/Create
         public IActionResult Create()
         {
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         // POST: Announcements/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -64,6 +68,7 @@ namespace HOA.Controllers
             return View(announcements);
         }
 
+        [Authorize(Roles = "Admin")]
         // GET: Announcements/Edit/5
         public IActionResult Edit(int? id)
         {
@@ -81,6 +86,7 @@ namespace HOA.Controllers
             return View(announcements);
         }
 
+        [Authorize(Roles = "Admin")]
         // POST: Announcements/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -115,6 +121,7 @@ namespace HOA.Controllers
             return View(announcements);
         }
 
+        [Authorize(Roles = "Admin")]
         // GET: Announcements/Delete/5
         public IActionResult Delete(int? id)
         {
@@ -133,6 +140,7 @@ namespace HOA.Controllers
             return View(announcements);
         }
 
+        [Authorize(Roles = "Admin")]
         // POST: Announcements/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

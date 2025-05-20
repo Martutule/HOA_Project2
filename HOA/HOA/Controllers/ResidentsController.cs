@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HOA.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HOA.Controllers
 {
+    [Authorize]
     public class ResidentsController : Controller
     {
         
@@ -14,6 +16,7 @@ namespace HOA.Controllers
             _residentsService = residentsService;
         }
 
+        
         // GET: Residents
         public IActionResult Index(string searchQuery)
         {
@@ -43,6 +46,7 @@ namespace HOA.Controllers
             return View(resident);
         }
 
+        [Authorize(Roles = "Admin")]
         // GET: Residents/Create
         public IActionResult Create()
         {
@@ -64,6 +68,7 @@ namespace HOA.Controllers
             return View(resident);
         }
 
+        [Authorize(Roles = "Admin")]
         // GET: Residents/Edit/5
         public IActionResult Edit(int? id)
         {
@@ -80,6 +85,7 @@ namespace HOA.Controllers
             return View(resident);
         }
 
+        [Authorize(Roles = "Admin")]
         // POST: Residents/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -114,6 +120,7 @@ namespace HOA.Controllers
             return View(resident);
         }
 
+        [Authorize(Roles = "Admin")]
         // GET: Residents/Delete/5
         public IActionResult Delete(int? id)
         {
@@ -131,6 +138,7 @@ namespace HOA.Controllers
             return View(resident);
         }
 
+        [Authorize(Roles = "Admin")]
         // POST: Residents/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -149,5 +157,6 @@ namespace HOA.Controllers
         {
             return _residentsService.GetResidentById(id) != null;
         }
+
     }
 }

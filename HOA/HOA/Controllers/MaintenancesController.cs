@@ -2,9 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using HOA.Models;
 using HOA.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HOA.Controllers
 {
+    [Authorize]
     public class MaintenancesController : Controller
     {
         private IMaintenanceService _maintenanceService;
@@ -42,12 +44,14 @@ namespace HOA.Controllers
             return View(maintenance);
         }
 
+        [Authorize(Roles = "Admin")]
         // GET: Maintenances/Create
         public IActionResult Create()
         {
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         // POST: Maintenances/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -63,6 +67,7 @@ namespace HOA.Controllers
             return View(maintenance);
         }
 
+        [Authorize(Roles = "Admin")]
         // GET: Maintenances/Edit/5
         public IActionResult Edit(int? id)
         {
@@ -80,6 +85,7 @@ namespace HOA.Controllers
             return View(maintenance);
         }
 
+        [Authorize(Roles = "Admin")]
         // POST: Maintenances/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -114,6 +120,7 @@ namespace HOA.Controllers
             return View(maintenance);
         }
 
+        [Authorize(Roles = "Admin")]
         // GET: Maintenances/Delete/5
         public IActionResult Delete(int? id)
         {
@@ -132,6 +139,7 @@ namespace HOA.Controllers
             return View(maintenance);
         }
 
+        [Authorize(Roles = "Admin")]
         // POST: Maintenances/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

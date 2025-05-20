@@ -8,7 +8,14 @@ namespace HOA.Controllers
         // GET: LoginController
         public ActionResult Index()
         {
-            return View();
+            if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                // User is already logged in — redirect elsewhere or show a message
+                return RedirectToAction("Index", "Home"); // or some other default page
+            }
+
+            // User is not logged in — redirect to Identity's login page
+            return RedirectToPage("/Account/Login", new { area = "Identity" });
         }
 
         // GET: LoginController/Details/5

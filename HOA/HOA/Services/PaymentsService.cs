@@ -44,5 +44,10 @@ namespace HOA.Services
         {
             return _repositoryWrapper.PaymentsRepository.FindByCondition(p => p.ResidentName.ToLower().Contains(name.ToLower().Trim()));
         }
+
+        public void UpdatePaymentStatus(int id, string state)
+        {
+            _repositoryWrapper.PaymentsRepository.UpdatePaymentStatus(id, state);
+        }
     }
 }

@@ -1,9 +1,11 @@
 using HOA.Models;
 using HOA.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HOA.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private IDashboardService _dashboardService;

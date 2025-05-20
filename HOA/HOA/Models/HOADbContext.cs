@@ -1,25 +1,22 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using HOA.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace HOA.Models
 {
-    public class HOADbContext : DbContext
+    public class HOADbContext : IdentityDbContext<IdentityUser>
     {
         public HOADbContext(DbContextOptions<HOADbContext> options)
             : base(options)
         {
         }
 
-        public DbSet<Resident> Residents { get; set; } = default!;
-
-        public DbSet<Payment> Payments { get; set; } = default!;
-
-        public DbSet<Event> Events { get; set; } = default!;    
-
-        public DbSet<Maintenance> Maintenances { get; set; } = default!;
-
-        public DbSet<Announcement> Announcements { get; set; } = default!;
-
-        public DbSet<User> Users { get; set; } = default!;
+        public DbSet<Resident> Residents { get; set; }
+        public DbSet<Payment> Payments { get; set; }
+        public DbSet<Event> Events { get; set; }
+        public DbSet<Maintenance> Maintenances { get; set; }
+        public DbSet<Announcement> Announcements { get; set; }
+        // Remove DbSet<User> if using IdentityUser for authentication
     }
 }
