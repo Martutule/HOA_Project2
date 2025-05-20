@@ -43,6 +43,51 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 var app = builder.Build();
 
+// Seed roles and users
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
+    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+
+    // Define roles
+    string[] roles = { "Admin", "User" };
+
+    foreach (var role in roles)
+    {
+        if (!await roleManager.RoleExistsAsync(role))
+        {
+            await roleManager.CreateAsync(new IdentityRole(role));
+        }
+    }
+
+    // Create admin user
+    var adminEmail = "admin@example.com";
+    var adminPassword = "Admin123!"; // Use a strong password in production
+    if (await userManager.FindByEmailAsync(adminEmail) == null)
+    {
+        var adminUser = new IdentityUser { UserName = adminEmail, Email = adminEmail, EmailConfirmed = true };
+        var result = await userManager.CreateAsync(adminUser, adminPassword);
+        if (result.Succeeded)
+        {
+            await userManager.AddToRoleAsync(adminUser, "Admin");
+        }
+    }
+
+    // Create normal user
+    var userEmail = "user@example.com";
+    var userPassword = "User123!"; // Use a strong password in production
+    if (await userManager.FindByEmailAsync(userEmail) == null)
+    {
+        var normalUser = new IdentityUser { UserName = userEmail, Email = userEmail, EmailConfirmed = true };
+        var result = await userManager.CreateAsync(normalUser, userPassword);
+        if (result.Succeeded)
+        {
+            await userManager.AddToRoleAsync(normalUser, "User");
+        }
+    }
+}
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {

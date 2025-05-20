@@ -44,7 +44,7 @@ namespace HOA.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Announcements", (string)null);
+                    b.ToTable("Announcements");
                 });
 
             modelBuilder.Entity("HOA.Models.Event", b =>
@@ -80,7 +80,7 @@ namespace HOA.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Events", (string)null);
+                    b.ToTable("Events");
                 });
 
             modelBuilder.Entity("HOA.Models.Maintenance", b =>
@@ -108,7 +108,7 @@ namespace HOA.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Maintenances", (string)null);
+                    b.ToTable("Maintenances");
                 });
 
             modelBuilder.Entity("HOA.Models.Payment", b =>
@@ -138,7 +138,7 @@ namespace HOA.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Payments", (string)null);
+                    b.ToTable("Payments");
                 });
 
             modelBuilder.Entity("HOA.Models.Resident", b =>
@@ -171,7 +171,7 @@ namespace HOA.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Residents", (string)null);
+                    b.ToTable("Residents");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -245,9 +245,6 @@ namespace HOA.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("EventId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
@@ -282,8 +279,6 @@ namespace HOA.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("EventId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -390,13 +385,6 @@ namespace HOA.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
-                {
-                    b.HasOne("HOA.Models.Event", null)
-                        .WithMany("JoinedUsers")
-                        .HasForeignKey("EventId");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
@@ -437,11 +425,6 @@ namespace HOA.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("HOA.Models.Event", b =>
-                {
-                    b.Navigation("JoinedUsers");
                 });
 #pragma warning restore 612, 618
         }

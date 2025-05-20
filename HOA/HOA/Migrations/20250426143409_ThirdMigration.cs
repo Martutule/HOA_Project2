@@ -10,7 +10,8 @@ namespace HOA.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-
+            migrationBuilder.DropTable(
+            name: "AspNetUsers");
         }
 
         /// <inheritdoc />
