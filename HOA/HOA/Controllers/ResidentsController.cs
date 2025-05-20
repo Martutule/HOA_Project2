@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HOA.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HOA.Controllers
 {
@@ -14,6 +15,8 @@ namespace HOA.Controllers
             _residentsService = residentsService;
         }
 
+        [Authorize]
+        
         // GET: Residents
         public IActionResult Index(string searchQuery)
         {
@@ -149,5 +152,6 @@ namespace HOA.Controllers
         {
             return _residentsService.GetResidentById(id) != null;
         }
+
     }
 }
