@@ -1,0 +1,7 @@
+Firstly run "EntityFrameworkCore\Update-Database" command to create the database. There are already predefined accounts with different roles. You can register new accounts if you want. 
+
+user@example.com
+User123!
+
+admin@example.com
+Admin123!

@@ -7,6 +7,7 @@
         IMaintenanceRepository MaintenanceRepository { get; }
         IAnnouncementsRepository AnnouncementsRepository { get; }
         IEventsRepository EventsRepository { get; }
+        INotificationRepository NotificationRepository { get; }
 
         void Save();
     }

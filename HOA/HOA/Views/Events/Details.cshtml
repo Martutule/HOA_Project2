@@ -14,10 +14,9 @@
 
                 @if (!string.IsNullOrEmpty(Model.ImagePath))
                 {
-                    <img src="Model.ImagePath"
+                    <img src="@Model.ImagePath"
                          class="card-img-top"
-                         alt="Model.EventName"
-                         onerror="this.src='/images/default-image.jpg'">
+                         alt="@Model.EventName">
                 }
 
                 <div class="card-body p-4">
