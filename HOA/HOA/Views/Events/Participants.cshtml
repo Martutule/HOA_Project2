@@ -1,9 +1,8 @@
-﻿@model IEnumerable<HOA.Models.EventParticipant>
+﻿@model IEnumerable<dynamic>
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.Title = "Event Participants";
     var eventName = ViewBag.EventName as string ?? "Event";
-    var users = ViewBag.Users as Dictionary<string, dynamic> ?? new Dictionary<string, dynamic>();
 }
 <div class="container my-5">
     <h2>Participants for @eventName</h2>
@@ -22,17 +21,17 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var participant in Model.Select((p, i) => new { p, i }))
+                @{
+                    int counter = 1;
+                }
+                @foreach (var participant in Model)
                 {
                     <tr>
-                        <td>@(participant.i + 1)</td>
-                        <td>
-                            @(users.ContainsKey(participant.p.UserId) ? users[participant.p.UserId].UserName : $"Unknown (ID: {participant.p.UserId})")
-                        </td>
-                        <td>
-                            @(users.ContainsKey(participant.p.UserId) ? users[participant.p.UserId].Email : $"Unknown (ID: {participant.p.UserId})")
-                        </td>
+                        <td>@counter</td>
+                        <td>@participant.UserName</td>
+                        <td>@participant.Email</td>
                     </tr>
+                    counter++;
                 }
             </tbody>
         </table>

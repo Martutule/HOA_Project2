@@ -4,6 +4,7 @@ using HOA.Models;
 using HOA.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
 
 namespace HOA.Controllers
 {
@@ -12,11 +13,13 @@ namespace HOA.Controllers
     {
         private IEventsService _eventsService;
         private readonly HOADbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public EventsController(IEventsService eventsService, HOADbContext context)
+        public EventsController(IEventsService eventsService, HOADbContext context, UserManager<IdentityUser> userManager)
         {
             _eventsService = eventsService;
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Events
@@ -207,22 +210,24 @@ namespace HOA.Controllers
                 .Where(ep => ep.EventId == id)
                 .ToListAsync();
 
-            // Get user information separately
-            var userIds = participants.Select(p => p.UserId).ToList();
-            var userList = await _context.Users
-                .Where(u => userIds.Contains(u.Id))
-                .ToListAsync();
+            var participantDetails = new List<dynamic>();
 
-            var users = userList.ToDictionary(u => u.Id, u => new { u.UserName, u.Email });
+            foreach (var participant in participants)
+            {
+                var user = await _userManager.FindByIdAsync(participant.UserId);
+                if (user != null)
+                {
+                    participantDetails.Add(new
+                    {
+                        UserId = participant.UserId,
+                        UserName = user.UserName,
+                        Email = user.Email
+                    });
+                }
+            }
 
-            // Debug information - remove this after fixing
-            Console.WriteLine($"Participant UserIds: {string.Join(", ", userIds)}");
-            Console.WriteLine($"Found Users: {string.Join(", ", users.Keys)}");
-            Console.WriteLine($"Users count: {users.Count}, Participants count: {participants.Count}");
-
-            ViewBag.Users = users;
             ViewBag.EventName = @event.EventName;
-            return View(participants);
+            return View(participantDetails);
         }
 
 
