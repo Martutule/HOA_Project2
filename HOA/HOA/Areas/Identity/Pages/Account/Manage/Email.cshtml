@@ -5,37 +5,190 @@
     ViewData["ActivePage"] = ManageNavPages.Email;
 }
 
-<h3>@ViewData["Title"]</h3>
-<partial name="_StatusMessage" for="StatusMessage" />
-<div class="row">
-    <div class="col-md-6">
-        <form id="email-form" method="post">
-            <div asp-validation-summary="All" class="text-danger" role="alert"></div>
-            @if (Model.IsEmailConfirmed)
-            {
-                <div class="form-floating mb-3 input-group">
-                    <input asp-for="Email" class="form-control" placeholder="Please enter your email." disabled />
-                        <div class="input-group-append">
-                            <span class="h-100 input-group-text text-success font-weight-bold">✓</span>
+<style>
+    .email-content {
+        padding: 0;
+    }
+
+    .email-header {
+        margin-bottom: 30px;
+    }
+
+    .email-title {
+        color: #333;
+        font-weight: 600;
+        margin-bottom: 20px;
+        font-size: 2rem;
+    }
+
+    .email-form-section {
+        background: rgba(255, 255, 255, 0.8);
+        padding: 30px;
+        border-radius: 15px;
+        margin-bottom: 25px;
+        backdrop-filter: blur(5px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .form-floating {
+        margin-bottom: 20px;
+    }
+
+    .form-control {
+        border-radius: 10px;
+        border: 2px solid #e9ecef;
+        transition: all 0.3s ease;
+    }
+
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+
+        .form-control:disabled {
+            background-color: rgba(248, 249, 250, 0.8);
+            border-color: #dee2e6;
+            opacity: 0.8;
+        }
+
+    .email-verified-group {
+        position: relative;
+    }
+
+    .email-verified-indicator {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: #28a745;
+        color: white;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        font-weight: bold;
+        z-index: 10;
+        box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
+    }
+
+    .verification-section {
+        background: rgba(255, 243, 205, 0.8);
+        border: 2px solid rgba(255, 193, 7, 0.3);
+        border-radius: 10px;
+        padding: 15px;
+        margin-top: 10px;
+        text-align: center;
+    }
+
+    .verification-message {
+        color: #856404;
+        margin-bottom: 10px;
+        font-size: 0.9rem;
+    }
+
+    .btn-verification {
+        background: linear-gradient(45deg, #ffc107, #e0a800);
+        border: none;
+        color: #212529;
+        font-weight: 600;
+        padding: 8px 20px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+    }
+
+        .btn-verification:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 193, 7, 0.3);
+            color: #212529;
+            text-decoration: none;
+        }
+
+    .btn-primary {
+        border-radius: 10px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        background: linear-gradient(45deg, #007bff, #0056b3);
+        border: none;
+        padding: 12px 20px;
+    }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+        }
+
+    .status-message {
+        margin-bottom: 25px;
+    }
+
+    .current-email-label {
+        color: #6c757d;
+        font-size: 0.9rem;
+        margin-bottom: 5px;
+    }
+</style>
+
+<div class="email-content">
+    <div class="email-header">
+        <h3 class="email-title">@ViewData["Title"]</h3>
+    </div>
+
+    <div class="status-message">
+        <partial name="_StatusMessage" for="StatusMessage" />
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="email-form-section">
+                <form id="email-form" method="post">
+                    <div asp-validation-summary="All" class="text-danger" role="alert"></div>
+
+                    <div class="current-email-label">Current Email Address</div>
+                    @if (Model.IsEmailConfirmed)
+                    {
+                        <div class="form-floating mb-3 email-verified-group">
+                            <input asp-for="Email" class="form-control" placeholder="Please enter your email." disabled />
+                            <label asp-for="Email" class="form-label"></label>
+                            <div class="email-verified-indicator">
+                                ✓
+                            </div>
                         </div>
-                    <label asp-for="Email" class="form-label"></label>
-                </div>
-            }
-            else
-            {
-                <div class="form-floating mb-3">
-                    <input asp-for="Email" class="form-control" placeholder="Please enter your email." disabled />
-                    <label asp-for="Email" class="form-label"></label>
-                    <button id="email-verification" type="submit" asp-page-handler="SendVerificationEmail" class="btn btn-link">Send verification email</button>
-                </div>
-            }
-            <div class="form-floating mb-3">
-                <input asp-for="Input.NewEmail" class="form-control" autocomplete="email" aria-required="true" placeholder="Please enter new email." />
-                <label asp-for="Input.NewEmail" class="form-label"></label>
-                <span asp-validation-for="Input.NewEmail" class="text-danger"></span>
+                    }
+                    else
+                    {
+                        <div class="form-floating mb-3">
+                            <input asp-for="Email" class="form-control" placeholder="Please enter your email." disabled />
+                            <label asp-for="Email" class="form-label"></label>
+                        </div>
+                        <div class="verification-section">
+                            <div class="verification-message">
+                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                Your email address is not verified
+                            </div>
+                            <button id="email-verification" type="submit" asp-page-handler="SendVerificationEmail" class="btn btn-verification">
+                                <i class="fas fa-envelope me-2"></i>
+                                Send verification email
+                            </button>
+                        </div>
+                    }
+
+                    <div class="form-floating mb-3 mt-4">
+                        <input asp-for="Input.NewEmail" class="form-control" autocomplete="email" aria-required="true" placeholder="Please enter new email." />
+                        <label asp-for="Input.NewEmail" class="form-label"></label>
+                        <span asp-validation-for="Input.NewEmail" class="text-danger"></span>
+                    </div>
+
+                    <button id="change-email-button" type="submit" asp-page-handler="ChangeEmail" class="w-100 btn btn-lg btn-primary">
+                        <i class="fas fa-sync-alt me-2"></i>
+                        Change email
+                    </button>
+                </form>
             </div>
-            <button id="change-email-button" type="submit" asp-page-handler="ChangeEmail" class="w-100 btn btn-lg btn-primary">Change email</button>
-        </form>
+        </div>
     </div>
 </div>
 

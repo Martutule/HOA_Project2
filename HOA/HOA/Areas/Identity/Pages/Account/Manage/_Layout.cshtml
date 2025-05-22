@@ -1,5 +1,5 @@
 ﻿@{
-    if (ViewData.TryGetValue("ParentLayout", out var parentLayout) && parentLayout !=  null)
+    if (ViewData.TryGetValue("ParentLayout", out var parentLayout) && parentLayout != null)
     {
         Layout = parentLayout.ToString();
     }
@@ -9,23 +9,101 @@
     }
 }
 
-<div class="pt-5 ps-4">
-    <h1>Manage your account</h1>
+<style>
+    .manage-container {
+        min-height: 100vh;
+        background-image: url('/Images/login_bg.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        padding: 40px 20px;
+        position: relative;
+    }
 
-    <div>
-        <h2>Change your account settings</h2>
-        <hr />
-        <div class="row">
-            <div class="col-md-3">
-                <partial name="_ManageNav" />
-            </div>
-            <div class="col-md-9">
-                @RenderBody()
+        .manage-container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 1;
+        }
+
+    .manage-content {
+        position: relative;
+        z-index: 2;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .manage-header {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+    .manage-title {
+        color: #333;
+        font-weight: 600;
+        margin-bottom: 10px;
+        font-size: 2.5rem;
+    }
+
+    .manage-subtitle {
+        color: #6c757d;
+        font-weight: 500;
+        margin-bottom: 0;
+        font-size: 1.2rem;
+    }
+
+    .manage-main {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+        min-height: 500px;
+    }
+
+    .manage-body {
+        padding: 40px;
+    }
+
+    .manage-divider {
+        display: none;
+    }
+
+</style>
+
+<div class="manage-container">
+    <div class="manage-content">
+        <div class="manage-header">
+            <h1 class="manage-title">Manage your account</h1>
+            <h2 class="manage-subtitle">Change your account settings</h2>
+        </div>
+
+        <div class="manage-main">
+            <div class="manage-body">
+                <hr class="manage-divider" />
+                <div class="row">
+                    <div class="col-md-3">
+                        <partial name="_ManageNav" />
+                    </div>
+                    <div class="col-md-9">
+                        @RenderBody()
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
-
 
 @section Scripts {
     @RenderSection("Scripts", required: false)
