@@ -5,13 +5,12 @@
 namespace HOA.Migrations
 {
     /// <inheritdoc />
-    public partial class ThirdMigration : Migration
+    public partial class UpdateIncidentDescription : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-            name: "AspNetUsers");
+
         }
 
         /// <inheritdoc />

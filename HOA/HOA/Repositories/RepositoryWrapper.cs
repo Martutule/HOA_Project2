@@ -11,6 +11,7 @@ namespace HOA.Repositories
         private IMaintenanceRepository _maintenance;
         private IAnnouncementsRepository _announcements;
         private IEventsRepository _events;
+        private IIncidentsRepository _incidents;
 
         public RepositoryWrapper(HOADbContext context)
         {
@@ -74,6 +75,18 @@ namespace HOA.Repositories
                     _events = new EventsRepository(_context);
                 }
                 return _events;
+            }
+        }
+
+        public IIncidentsRepository IncidentsRepository
+        {
+            get
+            {
+                if (_incidents == null)
+                {
+                    _incidents = new IncidentsRepository(_context);
+                }
+                return _incidents;
             }
         }
 
