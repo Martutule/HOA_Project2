@@ -1,4 +1,4 @@
-﻿@model IEnumerable<HOA.Models.Maintenance>
+﻿@model HOA.ViewModels.MaintenanceIndexViewModel
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -36,7 +36,7 @@
                 <input type="text" name="searchQuery" class="form-control" placeholder="Search task..." value="@ViewData["SearchQuery"]" />
                 <button class="btn btn-outline-secondary" type="submit">Search</button>
             </form>
-            
+
             @if (User.IsInRole("Admin"))
             {
                 <a class="btn btn-primary mt-2 mt-md-0" asp-action="Create">Add new task</a>
@@ -57,49 +57,119 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in Model)
+                    @if (Model.Maintenances != null && Model.Maintenances.Any())
+                    {
+                        foreach (var item in Model.Maintenances)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.Id)</td>
+                                <td>@Html.DisplayFor(modelItem => item.TaskName)</td>
+                                <td>@Html.DisplayFor(modelItem => item.AssignedPersonnel)</td>
+                                <td>@Html.DisplayFor(modelItem => item.DueDate)</td>
+
+                                <td>
+                                    @{
+                                        var badgeClass = item.Status switch
+                                        {
+                                            "Completed" => "bg-success",
+                                            "In Progress" => "bg-warning",
+                                            "Delayed" => "bg-danger",
+                                            _ => "bg-secondary"
+                                        };
+                                    }
+                                    <span class="badge @badgeClass">@Html.DisplayFor(modelItem => item.Status)</span>
+                                </td>
+                                <td class="text-center">
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <a class="bi bi-pencil-square btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                                    }
+
+                                    <a class="bi-card-list btn-sm btn-info" asp-action="Details" asp-route-id="@item.Id">Details</a>
+
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <a class="bi bi-trash btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
                     {
                         <tr>
-                            <td>@Html.DisplayFor(modelItem => item.Id)</td>
-                            <td>@Html.DisplayFor(modelItem => item.TaskName)</td>
-                            <td>@Html.DisplayFor(modelItem => item.AssignedPersonnel)</td>
-                            <td>@Html.DisplayFor(modelItem => item.DueDate)</td>
-
-                            <td>
-                                @{
-                                    var badgeClass = item.Status switch
-                                    {
-                                        "Completed" => "bg-success",
-                                        "In Progress" => "bg-warning",
-                                        "Delayed" => "bg-danger",
-                                        _ => "bg-secondary"  // Default color for any other status
-                                    };
-                                }
-                                <span class="badge @badgeClass">@Html.DisplayFor(modelItem => item.Status)</span>
-                            </td> 
-                            <!-- status: In Progress, Completed, Delayed -->
-                            <td class="text-center">
-                                @if (User.IsInRole("Admin"))
-                                {
-                                    <a class="bi bi-pencil-square btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                                }
-
-                                <a class="bi-card-list btn-sm btn-info" asp-action="Details" asp-route-id="@item.Id">Details</a> 
-
-                                @if (User.IsInRole("Admin"))
-                                {
-                                    <a class="bi bi-trash btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                                }
-
-                            </td>
+                            <td colspan="6" class="text-center">No maintenance tasks found.</td>
                         </tr>
                     }
+                </tbody>
+            </table>
+        </div>
 
+        <!-- Supplier Contracts Section -->
+        <div class="container my-5">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h2>Supplier Contracts</h2>
+                @if (User.IsInRole("Admin"))
+                {
+                    <a class="btn btn-success" asp-action="CreateSupplierContract">
+                        <i class="bi bi-plus-circle"></i> Add New Contract
+                    </a>
+                }
+            </div>
+
+            <table class="table table-bordered table-striped align-middle">
+                <thead class="table-secondary">
+                    <tr>
+                        <th>#</th>
+                        <th>Supplier Name</th>
+                        <th>Category</th>
+                        <th>Contract Start Date</th>
+                        <th>Contract End Date</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.SupplierContracts != null && Model.SupplierContracts.Any())
+                    {
+                        int i = 1;
+                        foreach (var contract in Model.SupplierContracts)
+                        {
+                            <tr>
+                                <td>@i</td>
+                                <td>@contract.SupplierName</td>
+                                <td>@contract.Category</td>
+                                <td>@contract.ContractStartDate.ToShortDateString()</td>
+                                <td>@contract.ContractEndDate.ToShortDateString()</td>
+                                <td class="text-center">
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <a class="bi bi-pencil-square btn btn-sm btn-warning" asp-action="EditSupplierContract" asp-route-id="@contract.Id">Edit</a>
+                                    }
+
+                                    @* <a class="bi-card-list btn-sm btn-info" asp-action="SupplierContractDetails" asp-route-id="@contract.Id">Details</a> *@
+
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <a class="bi bi-trash btn btn-sm btn-danger" asp-action="DeleteSupplierContract" asp-route-id="@contract.Id">Delete</a>
+                                    }
+                                </td>
+                            </tr>
+                            i++;
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="6" class="text-center">No supplier contracts found.</td>
+                        </tr>
+                    }
                 </tbody>
             </table>
         </div>
 
     </div>
+
+
 
 
     <!-- Bootstrap JS -->

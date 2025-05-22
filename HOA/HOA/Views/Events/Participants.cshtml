@@ -1,0 +1,40 @@
+﻿@model IEnumerable<dynamic>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Event Participants";
+    var eventName = ViewBag.EventName as string ?? "Event";
+}
+<div class="container my-5">
+    <h2>Participants for @eventName</h2>
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info mt-4">No participants have joined this event yet.</div>
+    }
+    else
+    {
+        <table class="table table-bordered table-striped mt-4">
+            <thead class="table-light">
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int counter = 1;
+                }
+                @foreach (var participant in Model)
+                {
+                    <tr>
+                        <td>@counter</td>
+                        <td>@participant.UserName</td>
+                        <td>@participant.Email</td>
+                    </tr>
+                    counter++;
+                }
+            </tbody>
+        </table>
+    }
+    <a asp-action="Index" class="btn btn-secondary mt-3">Back to Events</a>
+</div>

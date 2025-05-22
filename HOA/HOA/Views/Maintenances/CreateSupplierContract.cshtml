@@ -1,0 +1,74 @@
+﻿@model HOA.Models.SupplierContract
+@{
+    ViewData["Title"] = "Create Supplier Contract";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-4">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="card shadow">
+                <div class="card-header bg-success text-white">
+                    <h2 class="mb-0">Create New Supplier Contract</h2>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-action="CreateSupplierContract">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="SupplierName" class="form-label fw-bold"></label>
+                            <input asp-for="SupplierName" class="form-control" placeholder="Enter supplier name" />
+                            <span asp-validation-for="SupplierName" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="Category" class="form-label fw-bold"></label>
+                            <select asp-for="Category" class="form-select">
+                                <option value="" disabled selected>Select category</option>
+                                <option value="Landscaping">Landscaping</option>
+                                <option value="Cleaning">Cleaning</option>
+                                <option value="Security">Security</option>
+                                <option value="Maintenance">Maintenance</option>
+                                <option value="Utilities">Utilities</option>
+                                <option value="Pool Services">Pool Services</option>
+                                <option value="HVAC">HVAC</option>
+                                <option value="Electrical">Electrical</option>
+                                <option value="Plumbing">Plumbing</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <span asp-validation-for="Category" class="text-danger"></span>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="ContractStartDate" class="form-label fw-bold"></label>
+                                    <input asp-for="ContractStartDate" class="form-control" type="date" />
+                                    <span asp-validation-for="ContractStartDate" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="ContractEndDate" class="form-label fw-bold"></label>
+                                    <input asp-for="ContractEndDate" class="form-control" type="date" />
+                                    <span asp-validation-for="ContractEndDate" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                            <button type="submit" class="btn btn-success">Create Contract</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
