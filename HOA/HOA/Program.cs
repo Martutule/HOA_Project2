@@ -33,8 +33,9 @@ builder.Services.AddScoped<IPaymentsService, PaymentsService>();
 builder.Services.AddScoped<IMaintenanceService, MaintenanceService>();
 builder.Services.AddScoped<IAnnouncementsService, AnnouncementsService>();
 builder.Services.AddScoped<IEventsService, EventsService>();
+builder.Services.AddScoped<ISupplierContractService, SupplierContractService>();
 
-
+builder.Services.AddScoped<ISupplierContractRepository, SupplierContractRepository>();
 builder.Services.AddScoped<IResidentsRepository, ResidentsRepository>();
 builder.Services.AddScoped<IPaymentsRepository, PaymentsRepository>();
 builder.Services.AddScoped<IMaintenanceRepository, MaintenanceRepository>();
