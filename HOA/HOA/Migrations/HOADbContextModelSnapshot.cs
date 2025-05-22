@@ -44,7 +44,7 @@ namespace HOA.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Announcements");
+                    b.ToTable("Announcements", (string)null);
                 });
 
             modelBuilder.Entity("HOA.Models.Event", b =>
@@ -80,7 +80,7 @@ namespace HOA.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Events");
+                    b.ToTable("Events", (string)null);
                 });
 
             modelBuilder.Entity("HOA.Models.Maintenance", b =>
@@ -108,7 +108,7 @@ namespace HOA.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Maintenances");
+                    b.ToTable("Maintenances", (string)null);
                 });
 
             modelBuilder.Entity("HOA.Models.Payment", b =>
@@ -138,7 +138,7 @@ namespace HOA.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Payments");
+                    b.ToTable("Payments", (string)null);
                 });
 
             modelBuilder.Entity("HOA.Models.Resident", b =>
@@ -171,7 +171,7 @@ namespace HOA.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Residents");
+                    b.ToTable("Residents", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
