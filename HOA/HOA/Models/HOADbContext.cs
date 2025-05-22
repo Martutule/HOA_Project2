@@ -17,6 +17,8 @@ namespace HOA.Models
         public DbSet<Event> Events { get; set; }
         public DbSet<Maintenance> Maintenances { get; set; }
         public DbSet<Announcement> Announcements { get; set; }
+        public DbSet<Incident> Incidents { get; set; }
+        // Remove DbSet<User> if using IdentityUser for authentication
         public DbSet<SupplierContract> SupplierContracts { get; set; }
         public DbSet<EventParticipant> EventParticipants { get; set; }
 

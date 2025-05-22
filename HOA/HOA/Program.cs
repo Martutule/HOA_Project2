@@ -33,7 +33,9 @@ builder.Services.AddScoped<IPaymentsService, PaymentsService>();
 builder.Services.AddScoped<IMaintenanceService, MaintenanceService>();
 builder.Services.AddScoped<IAnnouncementsService, AnnouncementsService>();
 builder.Services.AddScoped<IEventsService, EventsService>();
+builder.Services.AddScoped<IIncidentsService, IncidentsService>();
 builder.Services.AddScoped<ISupplierContractService, SupplierContractService>();
+
 
 builder.Services.AddScoped<ISupplierContractRepository, SupplierContractRepository>();
 builder.Services.AddScoped<IResidentsRepository, ResidentsRepository>();
@@ -41,6 +43,8 @@ builder.Services.AddScoped<IPaymentsRepository, PaymentsRepository>();
 builder.Services.AddScoped<IMaintenanceRepository, MaintenanceRepository>();
 builder.Services.AddScoped<IAnnouncementsRepository, AnnouncementsRepository>();
 builder.Services.AddScoped<IEventsRepository, EventsRepository>();
+builder.Services.AddScoped<IIncidentsRepository, IncidentsRepository>();
+
 builder.Services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
 
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
