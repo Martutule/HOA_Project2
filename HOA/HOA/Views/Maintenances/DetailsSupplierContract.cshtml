@@ -1,0 +1,41 @@
+﻿@model HOA.Models.SupplierContract
+@{
+    ViewData["Title"] = "Supplier Contract Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container py-4">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="mb-0">Supplier Contract Details</h2>
+                </div>
+                <div class="card-body p-4">
+                    <dl class="row">
+                        <dt class="col-sm-4 fw-bold">@Html.DisplayNameFor(model => model.SupplierName)</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.SupplierName)</dd>
+
+                        <dt class="col-sm-4 fw-bold">@Html.DisplayNameFor(model => model.Category)</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.Category)</dd>
+
+                        <dt class="col-sm-4 fw-bold">@Html.DisplayNameFor(model => model.ContractStartDate)</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.ContractStartDate)</dd>
+
+                        <dt class="col-sm-4 fw-bold">@Html.DisplayNameFor(model => model.ContractEndDate)</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.ContractEndDate)</dd>
+                    </dl>
+                    <div class="d-flex justify-content-between mt-4">
+                        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <div>
+                                <a asp-action="EditSupplierContract" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+                                <a asp-action="DeleteSupplierContract" asp-route-id="@Model.Id" class="btn btn-danger ms-2">Delete</a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

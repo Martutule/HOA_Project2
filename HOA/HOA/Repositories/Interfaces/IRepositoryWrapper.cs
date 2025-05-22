@@ -8,6 +8,7 @@
         IAnnouncementsRepository AnnouncementsRepository { get; }
         IEventsRepository EventsRepository { get; }
         IIncidentsRepository IncidentsRepository { get; }
+        ISupplierContractRepository SupplierContractRepository { get; }
 
         void Save();
     }
