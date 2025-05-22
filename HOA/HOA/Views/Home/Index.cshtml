@@ -25,33 +25,39 @@
     </header>
     <br />
 
-    <!-- Notification Bell -->
-    <div class="d-flex justify-content-center mt-3 position-relative">
-        <div class="dropdown">
-            <button class="btn btn-light position-relative" id="notificationBell" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="bi bi-bell fs-4"></i>
-                @if (Model.Notifications != null && Model.Notifications.Any())
+    <div class="dropdown position-absolute" style="top: 100px; left: 150px; z-index: 1000;">
+        <button class="btn btn-warning position-relative" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-bell fs-4"></i>
+            @if (Model.Notifications != null && Model.Notifications.Count > 0)
+            {
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    @Model.Notifications.Count
+                    <span class="visually-hidden">unread notifications</span>
+                </span>
+            }
+        </button>
+
+        <ul class="dropdown-menu dropdown-menu-end shadow" style="min-width: 300px;">
+            @if (Model.Notifications != null && Model.Notifications.Any())
+            {
+                @foreach (var note in Model.Notifications.OrderByDescending(n => n.Id))
                 {
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                        @Model.Notifications.Count()
-                    </span>
+                    <li>
+                        <a class="dropdown-item" href="@note.Link">
+                            <div><strong>@note.Message</strong></div>
+                            <small class="text-muted">@note.Timestamp.ToString("g")</small>
+                        </a>
+                    </li>
                 }
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="notificationBell" style="min-width: 300px;">
-                @if (Model.Notifications != null && Model.Notifications.Any())
-                {
-                    @foreach (var note in Model.Notifications)
-                    {
-                        <li><a class="dropdown-item text-wrap" href="@note.Link">@note.Message</a></li>
-                    }
-                }
-                else
-                {
-                    <li><span class="dropdown-item text-muted">No new notifications</span></li>
-                }
-            </ul>
-        </div>
+            }
+            else
+            {
+                <li><span class="dropdown-item text-muted">No new notifications</span></li>
+            }
+        </ul>
     </div>
+
+
 
 
     <!-- Main Dashboard Content -->

@@ -9,11 +9,13 @@ namespace HOA.Controllers
     [Authorize]
     public class EventsController : Controller
     {
-        private IEventsService _eventsService;
+        private readonly IEventsService _eventsService;
+        private readonly INotificationService _notificationService;
 
-        public EventsController(IEventsService eventsService)
+        public EventsController(IEventsService eventsService, INotificationService notificationService)
         {
             _eventsService = eventsService;
+            _notificationService = notificationService;
         }
 
         // GET: Events
@@ -50,11 +52,8 @@ namespace HOA.Controllers
         {
             return View();
         }
-        
+
         [Authorize(Roles = "Admin")]
-        // POST: Events/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create([Bind("Id,ImagePath,EventName,Description,Location,Date,Color")] Event @event)
@@ -63,10 +62,19 @@ namespace HOA.Controllers
             {
                 _eventsService.AddEvent(@event);
 
+                // ⚠ Ensure event has an ID before generating link (assumes ID is assigned on save)
+                _notificationService.CreateNotification(new Notification
+                {
+                    Message = $"New event created: {@event.EventName}",
+                    Link = Url.Action("Details", "Events", new { id = @event.Id }),
+                    Timestamp = DateTime.Now
+                });
+
                 return RedirectToAction(nameof(Index));
             }
             return View(@event);
         }
+
 
         [Authorize(Roles = "Admin")]
         // GET: Events/Edit/5
