@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using HOA.Models;
 using HOA.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace HOA.Controllers
 {
@@ -10,10 +11,12 @@ namespace HOA.Controllers
     public class EventsController : Controller
     {
         private IEventsService _eventsService;
+        private readonly HOADbContext _context;
 
-        public EventsController(IEventsService eventsService)
+        public EventsController(IEventsService eventsService, HOADbContext context)
         {
             _eventsService = eventsService;
+            _context = context;
         }
 
         // GET: Events
@@ -23,6 +26,12 @@ namespace HOA.Controllers
             var events = string.IsNullOrEmpty(searchQuery)
                 ? _eventsService.GetAllEvents()
                 : _eventsService.SearchEventsByEventName(searchQuery);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var joinedEvents = _context.EventParticipants
+                .Where(ep => ep.UserId == userId)
+                .Select(ep => ep.EventId)
+                .ToHashSet();
+            ViewBag.JoinedEvents = joinedEvents;
             return View(events);
         }
 
@@ -160,5 +169,62 @@ namespace HOA.Controllers
         {
             return _eventsService.GetEventById(id) != null;
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ToggleJoin(int eventId)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null)
+                return Unauthorized();
+
+            var participant = await _context.EventParticipants
+                .FirstOrDefaultAsync(ep => ep.EventId == eventId && ep.UserId == userId);
+
+            bool joined;
+            if (participant == null)
+            {
+                _context.EventParticipants.Add(new EventParticipant { EventId = eventId, UserId = userId });
+                joined = true;
+            }
+            else
+            {
+                _context.EventParticipants.Remove(participant);
+                joined = false;
+            }
+            await _context.SaveChangesAsync();
+            return Json(new { joined });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Participants(int id)
+        {
+            var @event = _eventsService.GetEventById(id);
+            if (@event == null)
+                return NotFound();
+
+            var participants = await _context.EventParticipants
+                .Where(ep => ep.EventId == id)
+                .ToListAsync();
+
+            // Get user information separately
+            var userIds = participants.Select(p => p.UserId).ToList();
+            var userList = await _context.Users
+                .Where(u => userIds.Contains(u.Id))
+                .ToListAsync();
+
+            var users = userList.ToDictionary(u => u.Id, u => new { u.UserName, u.Email });
+
+            // Debug information - remove this after fixing
+            Console.WriteLine($"Participant UserIds: {string.Join(", ", userIds)}");
+            Console.WriteLine($"Found Users: {string.Join(", ", users.Keys)}");
+            Console.WriteLine($"Users count: {users.Count}, Participants count: {participants.Count}");
+
+            ViewBag.Users = users;
+            ViewBag.EventName = @event.EventName;
+            return View(participants);
+        }
+
+
     }
 }

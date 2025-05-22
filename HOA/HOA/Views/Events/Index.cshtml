@@ -4,6 +4,7 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.Title = "HOA - Events";
+    var joinedEvents = ViewBag.JoinedEvents as HashSet<int> ?? new HashSet<int>();
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -75,7 +76,23 @@
                                     <a class="bi bi-trash btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
 
                                 }
-                                <button>Join</button>
+                                <!-- Join/Unjoin Button -->
+                                @{
+                                    var isJoined = joinedEvents.Contains(item.Id);
+                                }
+                                <button type="button"
+                                        class="btn btn-sm join-btn @(joinedEvents.Contains(item.Id) ? "btn-success" : "btn-outline-primary")"
+                                        data-event-id="@item.Id"
+                                        data-joined="@(joinedEvents.Contains(item.Id).ToString().ToLower())">
+                                    @(joinedEvents.Contains(item.Id) ? "Joined!" : "Join")
+                                </button>
+                                <form class="anti-forgery-form" style="display:none;">
+                                    @Html.AntiForgeryToken()
+                                </form>
+
+                                <!-- Show Participants Button -->
+                                <a class="btn btn-sm btn-secondary" asp-action="Participants" asp-route-id="@item.Id">Show participants</a>
+
                                 <span class="event-date">@item.Date.ToString("dd MMM - HH:mm")</span> @* Am corectat formatul datei aici, cred ca PPPP e ce voiai *@
                             </div>
                         </div>
@@ -87,6 +104,54 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    @section Scripts {
+        <script>
+                       document.querySelectorAll('.join-btn').forEach(function (btn) {
+                btn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    var eventId = this.getAttribute('data-event-id');
+
+                    // Get anti-forgery token
+                    var token = document.querySelector('.anti-forgery-form input[name="__RequestVerificationToken"]').value;
+
+                    // Create FormData to send the request properly
+                    var formData = new FormData();
+                    formData.append('eventId', eventId);
+                    formData.append('__RequestVerificationToken', token);
+
+                    fetch('/Events/ToggleJoin', {
+                        method: 'POST',
+                        body: formData // Send as FormData instead of JSON
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('Response:', data); // For debugging
+                        if (data.joined) {
+                            btn.classList.remove('btn-outline-primary');
+                            btn.classList.add('btn-success');
+                            btn.textContent = 'Joined!';
+                            btn.setAttribute('data-joined', 'true');
+                        } else {
+                            btn.classList.remove('btn-success');
+                            btn.classList.add('btn-outline-primary');
+                            btn.textContent = 'Join';
+                            btn.setAttribute('data-joined', 'false');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('An error occurred. Please try again.');
+                    });
+                });
+            });
+        </script>
+    }
+
 </body>
 
 </html>

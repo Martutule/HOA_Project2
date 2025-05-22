@@ -1,0 +1,41 @@
+﻿@model IEnumerable<HOA.Models.EventParticipant>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Event Participants";
+    var eventName = ViewBag.EventName as string ?? "Event";
+    var users = ViewBag.Users as Dictionary<string, dynamic> ?? new Dictionary<string, dynamic>();
+}
+<div class="container my-5">
+    <h2>Participants for @eventName</h2>
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info mt-4">No participants have joined this event yet.</div>
+    }
+    else
+    {
+        <table class="table table-bordered table-striped mt-4">
+            <thead class="table-light">
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var participant in Model.Select((p, i) => new { p, i }))
+                {
+                    <tr>
+                        <td>@(participant.i + 1)</td>
+                        <td>
+                            @(users.ContainsKey(participant.p.UserId) ? users[participant.p.UserId].UserName : $"Unknown (ID: {participant.p.UserId})")
+                        </td>
+                        <td>
+                            @(users.ContainsKey(participant.p.UserId) ? users[participant.p.UserId].Email : $"Unknown (ID: {participant.p.UserId})")
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    <a asp-action="Index" class="btn btn-secondary mt-3">Back to Events</a>
+</div>
