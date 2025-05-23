@@ -14,5 +14,7 @@
             TotalEvents = totalEvents;
             RecentAnnouncements = recentAnnouncements;
         }
+        public List<Notification> Notifications { get; set; }
+
     }
 }

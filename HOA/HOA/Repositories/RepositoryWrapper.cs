@@ -11,6 +11,7 @@ namespace HOA.Repositories
         private IMaintenanceRepository _maintenance;
         private IAnnouncementsRepository _announcements;
         private IEventsRepository _events;
+        private INotificationRepository _notification;
         private IIncidentsRepository _incidents;
         private ISupplierContractRepository _supplierContract;
 
@@ -79,6 +80,16 @@ namespace HOA.Repositories
                 return _events;
             }
         }
+
+        public INotificationRepository NotificationRepository
+        {
+            get
+            {
+                if (_notification == null)
+                {
+                    _notification = new NotificationRepository(_context);
+                }
+                return _notification;
 
         public IIncidentsRepository IncidentsRepository
         {

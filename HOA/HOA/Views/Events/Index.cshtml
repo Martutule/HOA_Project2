@@ -92,11 +92,15 @@
             @foreach (var item in Model)
             {
                 <div class="col-md-4">
-                    <div class="card border event-card mb-4">
-                        <img src="@item.ImagePath"
-                             class="card-img-top"
-                             alt="@item.EventName"
-                             onerror="this.src='/images/default-image.jpg'">
+
+                    <div class="card border mb-4" style="background-color: @item.Color; color: white;">
+
+                        @if (!string.IsNullOrEmpty(item.ImagePath))
+                        {
+                            <img src="@item.ImagePath"
+                                 class="card-img-top"
+                                 alt="@item.EventName">
+                        }
 
                         <div class="card-body">
                             <h5 class="card-title">@Html.DisplayFor(modelItem => item.EventName)</h5>

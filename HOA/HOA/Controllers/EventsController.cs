@@ -11,15 +11,18 @@ namespace HOA.Controllers
     [Authorize]
     public class EventsController : Controller
     {
+
         private IEventsService _eventsService;
         private readonly HOADbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly INotificationService _notificationService;
 
-        public EventsController(IEventsService eventsService, HOADbContext context, UserManager<IdentityUser> userManager)
+        public EventsController(IEventsService eventsService, HOADbContext context, UserManager<IdentityUser> userManager, INotificationService notificationService)
         {
             _eventsService = eventsService;
             _context = context;
             _userManager = userManager;
+            _notificationService = notificationService;
         }
 
         // GET: Events
@@ -62,11 +65,8 @@ namespace HOA.Controllers
         {
             return View();
         }
-        
+
         [Authorize(Roles = "Admin")]
-        // POST: Events/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create([Bind("Id,ImagePath,EventName,Description,Location,Date,Color")] Event @event)
@@ -75,10 +75,18 @@ namespace HOA.Controllers
             {
                 _eventsService.AddEvent(@event);
 
+                _notificationService.CreateNotification(new Notification
+                {
+                    Message = $"New event: {@event.EventName.Substring(0, Math.Min(6, @event.EventName.Length))}...",
+                    Link = Url.Action("Details", "Events", new { id = @event.Id }),
+                    Timestamp = DateTime.Now
+                });
+
                 return RedirectToAction(nameof(Index));
             }
             return View(@event);
         }
+
 
         [Authorize(Roles = "Admin")]
         // GET: Events/Edit/5
@@ -153,7 +161,7 @@ namespace HOA.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        // POST: Events/Delete/5
+        // POST: Events/Delete
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)

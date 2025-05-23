@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using HOA.Models;
 using HOA.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using HOA.Services;
 
 namespace HOA.Controllers
 {
@@ -10,11 +11,12 @@ namespace HOA.Controllers
     public class AnnouncementsController : Controller
     {
         private IAnnouncementsService _announcementsService;
+        private readonly INotificationService _notificationService;
 
-
-        public AnnouncementsController(IAnnouncementsService announcementsService)
+        public AnnouncementsController(IAnnouncementsService announcementsService, INotificationService notificationService)
         {
             _announcementsService = announcementsService;
+            _notificationService = notificationService;
         }
 
         // GET: Announcements
@@ -63,6 +65,14 @@ namespace HOA.Controllers
             if (ModelState.IsValid)
             {
                 _announcementsService.AddAnnouncement(announcements);
+
+                _notificationService.CreateNotification(new Notification
+                {
+                    Message = $"New announcement: {announcements.Title.Substring(0, Math.Min(6, announcements.Title.Length))}...",
+                    Link = Url.Action("Details", "Announcements", new { id = announcements.Id }),
+                    Timestamp = DateTime.Now
+                });
+
                 return RedirectToAction(nameof(Index));
             }
             return View(announcements);
