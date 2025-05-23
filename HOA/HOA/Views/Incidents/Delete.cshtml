@@ -39,13 +39,30 @@
                             <dd class="col-sm-9">@Html.DisplayFor(model => model.Location)</dd>
                         }
 
-                        @if (!string.IsNullOrEmpty(Model.ImagePath))
-                        {
-                            <dt class="col-sm-3 fw-bold">Image</dt>
-                            <dd class="col-sm-9">
-                                <img src="@Model.ImagePath" alt="Incident image" class="img-thumbnail" style="max-width: 200px; max-height: 200px;" />
-                            </dd>
-                        }
+                        <dt class="col-sm-3 fw-bold">Image</dt>
+                        <dd class="col-sm-9">
+                            @if (!string.IsNullOrEmpty(Model.ImagePath))
+                            {
+                                <div class="mt-2">
+                                    <img src="@Url.Content($"~/{Model.ImagePath}")"
+                                             alt="Incident image"
+                                             class="img-fluid rounded shadow-sm"
+                                             style="max-width: 400px;"
+                                             onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
+                                        <div style="display: none;" class="alert alert-warning">
+                                            <i class="bi bi-exclamation-triangle"></i> Image could not be loaded: @Model.ImagePath
+                                        </div> 
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="mt-2">
+                                    <div class="alert alert-info">
+                                        <i class="bi bi-info-circle"></i> No image available for this incident.
+                                    </div>
+                                </div>
+                            }
+                        </dd>
                     </dl>
 
                     <form asp-action="Delete" class="mt-4">

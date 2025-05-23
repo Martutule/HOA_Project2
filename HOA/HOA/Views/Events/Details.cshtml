@@ -14,10 +14,11 @@
 
                 @if (!string.IsNullOrEmpty(Model.ImagePath))
                 {
-                    <img src="@Model.ImagePath"
+                    <img src="@Url.Content($"~/{Model.ImagePath}")"
                          class="card-img-top"
                          alt="@Model.EventName">
                 }
+
 
                 <div class="card-body p-4">
                     <h3 class="mb-3" style="color: @Model.Color">@Model.EventName</h3>

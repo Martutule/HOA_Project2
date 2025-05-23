@@ -82,64 +82,64 @@ namespace HOA.Migrations
 
                     b.ToTable("Events");
                 });
-modelBuilder.Entity("HOA.Models.Incident", b =>
-{
-    b.Property<int>("Id")
-        .ValueGeneratedOnAdd()
-        .HasColumnType("int");
 
-    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+            modelBuilder.Entity("HOA.Models.EventParticipant", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-    b.Property<DateOnly>("Date")
-        .HasColumnType("date");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-    b.Property<string>("Description")
-        .IsRequired()
-        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("EventId")
+                        .HasColumnType("int");
 
-    b.Property<string>("ImagePath")
-        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
-    b.Property<string>("Location")
-        .IsRequired()
-        .HasColumnType("nvarchar(max)");
+                    b.HasKey("Id");
 
-    b.Property<string>("Status")
-        .IsRequired()
-        .HasColumnType("nvarchar(max)");
+                    b.HasIndex("EventId", "UserId")
+                        .IsUnique();
 
-    b.Property<string>("Title")
-        .IsRequired()
-        .HasColumnType("nvarchar(max)");
+                    b.ToTable("EventParticipants");
+                });
 
-    b.HasKey("Id");
+            modelBuilder.Entity("HOA.Models.Incident", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-    b.ToTable("Incidents");
-});
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-modelBuilder.Entity("HOA.Models.EventParticipant", b =>
-{
-    b.Property<int>("Id")
-        .ValueGeneratedOnAdd()
-        .HasColumnType("int");
+                    b.Property<DateOnly>("Date")
+                        .HasColumnType("date");
 
-    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-    b.Property<int>("EventId")
-        .HasColumnType("int");
+                    b.Property<string>("ImagePath")
+                        .HasColumnType("nvarchar(max)");
 
-    b.Property<string>("UserId")
-        .IsRequired()
-        .HasColumnType("nvarchar(450)");
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-    b.HasKey("Id");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-    b.HasIndex("EventId", "UserId")
-        .IsUnique();
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-    b.ToTable("EventParticipants");
-});
+                    b.HasKey("Id");
 
+                    b.ToTable("Incidents");
+                });
 
             modelBuilder.Entity("HOA.Models.Maintenance", b =>
                 {
