@@ -40,9 +40,14 @@ namespace HOA.Services
         {
             return _repositoryWrapper.PaymentsRepository.FindAll();
         }
-        public IEnumerable<Payment> SearchPaymentsByResidentName(string name)
+        public IEnumerable<Payment> SearchPaymentsByApartmentNumber(string searchQuery)
         {
-            return _repositoryWrapper.PaymentsRepository.FindByCondition(p => p.ResidentName.ToLower().Contains(name.ToLower().Trim()));
+            if (int.TryParse(searchQuery, out int apartmentNumber))
+            {
+                return _repositoryWrapper.PaymentsRepository.FindByCondition(p => p.Apartment == apartmentNumber);
+            }
+            // Return empty if not a valid number, or you could return all
+            return Enumerable.Empty<Payment>();
         }
 
         public void UpdatePaymentStatus(int id, string state)

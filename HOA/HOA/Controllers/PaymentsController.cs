@@ -23,7 +23,7 @@ namespace HOA.Controllers
 
             var payments = string.IsNullOrEmpty(searchQuery)
                 ? _paymentsService.GetAllPayments()
-                : _paymentsService.SearchPaymentsByResidentName(searchQuery);
+                : _paymentsService.SearchPaymentsByApartmentNumber(searchQuery);
 
             return View(payments);
         }
@@ -89,7 +89,7 @@ namespace HOA.Controllers
         [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("Id,ResidentName,Apartment,PaymentDate,Amount,Status")] Payment payment)
+        public IActionResult Create([Bind("Id,PaymentType,Apartment,PaymentDate,Amount,Status")] Payment payment)
         {
             if (ModelState.IsValid)
             {
@@ -123,7 +123,7 @@ namespace HOA.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind("Id,ResidentName,Apartment,PaymentDate,Amount,Status")] Payment payment)
+        public IActionResult Edit(int id, [Bind("Id,PaymentType,Apartment,PaymentDate,Amount,Status")] Payment payment)
         {
             if (id != payment.Id)
             {

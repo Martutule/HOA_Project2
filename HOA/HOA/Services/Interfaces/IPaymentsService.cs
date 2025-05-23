@@ -9,7 +9,7 @@ namespace HOA.Services.Interfaces
         void UpdatePayment(Payment payment);
         void DeletePayment(int id);
         IEnumerable<Payment> GetAllPayments();
-        IEnumerable<Payment> SearchPaymentsByResidentName(string name);
+        IEnumerable<Payment> SearchPaymentsByApartmentNumber(string searchQuery);
         void UpdatePaymentStatus(int id, string state);
     }
 }

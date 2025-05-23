@@ -4,7 +4,7 @@ public partial class Payment
 {
     public int Id { get; set; }
 
-    public string ResidentName { get; set; }
+    public string PaymentType { get; set; }
 
     public int Apartment { get; set; }
 
