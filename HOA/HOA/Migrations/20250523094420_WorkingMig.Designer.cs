@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HOA.Migrations
 {
     [DbContext(typeof(HOADbContext))]
-    [Migration("20250523085441_MigrationPls")]
-    partial class MigrationPls
+    [Migration("20250523094420_WorkingMig")]
+    partial class WorkingMig
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
