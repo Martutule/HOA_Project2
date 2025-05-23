@@ -19,15 +19,17 @@
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <div class="form-group mb-3">
-                                    <label asp-for="ResidentName" class="form-label fw-bold"></label>
-                                    <input asp-for="ResidentName" class="form-control" placeholder="Enter resident name" />
-                                    <span asp-validation-for="ResidentName" class="text-danger"></span>
+                                    <label asp-for="PaymentType" class="form-label fw-bold"></label>
+                                    <input asp-for="PaymentType" class="form-control" placeholder="Enter payment type" />
+                                    <span asp-validation-for="PaymentType" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group mb-3">
                                     <label asp-for="Apartment" class="form-label fw-bold"></label>
-                                    <input asp-for="Apartment" class="form-control" placeholder="Apartment number" />
+                                    <select asp-for="Apartment" class="form-control" asp-items="@(new SelectList(ViewBag.Apartments, Model.Apartment))">
+                                        <option value="">-- Select Apartment --</option>
+                                    </select>
                                     <span asp-validation-for="Apartment" class="text-danger"></span>
                                 </div>
                             </div>

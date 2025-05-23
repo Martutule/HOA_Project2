@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using HOA.Models;
 using HOA.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using HOA.Repositories.Interfaces;
 
 namespace HOA.Controllers
 {
@@ -10,10 +11,12 @@ namespace HOA.Controllers
     public class PaymentsController : Controller
     {
         private IPaymentsService _paymentsService;
+        private readonly IRepositoryWrapper _repositoryWrapper;
 
-        public PaymentsController(IPaymentsService paymentsService)
+        public PaymentsController(IPaymentsService paymentsService, IRepositoryWrapper repositoryWrapper)
         {
             _paymentsService = paymentsService;
+            _repositoryWrapper = repositoryWrapper;
         }
 
         // GET: Payments
@@ -23,7 +26,7 @@ namespace HOA.Controllers
 
             var payments = string.IsNullOrEmpty(searchQuery)
                 ? _paymentsService.GetAllPayments()
-                : _paymentsService.SearchPaymentsByResidentName(searchQuery);
+                : _paymentsService.SearchPaymentsByApartmentNumber(searchQuery);
 
             return View(payments);
         }
@@ -80,6 +83,14 @@ namespace HOA.Controllers
         // GET: Payments/Create
         public IActionResult Create()
         {
+            var apartments = _repositoryWrapper.ResidentsRepository
+            .FindAll()
+            .Select(r => r.Apartment)
+            .Distinct()
+            .OrderBy(a => a)
+            .ToList();
+
+            ViewBag.Apartments = apartments;
             return View();
         }
 
@@ -89,13 +100,21 @@ namespace HOA.Controllers
         [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("Id,ResidentName,Apartment,PaymentDate,Amount,Status")] Payment payment)
+        public IActionResult Create([Bind("Id,PaymentType,Apartment,PaymentDate,Amount,Status")] Payment payment)
         {
             if (ModelState.IsValid)
             {
                 _paymentsService.AddPayment(payment);
                 return RedirectToAction(nameof(Index));
             }
+            // Repopulate dropdown on error
+            var apartments = _repositoryWrapper.ResidentsRepository
+                .FindAll()
+                .Select(r => r.Apartment)
+                .Distinct()
+                .OrderBy(a => a)
+                .ToList();
+            ViewBag.Apartments = apartments;
             return View(payment);
         }
 
@@ -114,6 +133,14 @@ namespace HOA.Controllers
             {
                 return NotFound();
             }
+            // Fetch apartments for dropdown
+            var apartments = _repositoryWrapper.ResidentsRepository
+                .FindAll()
+                .Select(r => r.Apartment)
+                .Distinct()
+                .OrderBy(a => a)
+                .ToList();
+            ViewBag.Apartments = apartments;
             return View(payment);
         }
 
@@ -123,7 +150,7 @@ namespace HOA.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind("Id,ResidentName,Apartment,PaymentDate,Amount,Status")] Payment payment)
+        public IActionResult Edit(int id, [Bind("Id,PaymentType,Apartment,PaymentDate,Amount,Status")] Payment payment)
         {
             if (id != payment.Id)
             {
@@ -149,7 +176,18 @@ namespace HOA.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+
+            // Repopulate dropdown if validation fails
+            var apartments = _repositoryWrapper.ResidentsRepository
+                .FindAll()
+                .Select(r => r.Apartment)
+                .Distinct()
+                .OrderBy(a => a)
+                .ToList();
+            ViewBag.Apartments = apartments;
+
             return View(payment);
+
         }
 
         [Authorize(Roles = "Admin")]
