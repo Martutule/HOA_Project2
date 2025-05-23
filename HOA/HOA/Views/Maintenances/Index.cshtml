@@ -125,7 +125,10 @@
                         <th>Category</th>
                         <th>Contract Start Date</th>
                         <th>Contract End Date</th>
-                        <th class="text-center">Actions</th>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <th class="text-center">Actions</th>
+                        }
                     </tr>
                 </thead>
                 <tbody>
@@ -140,19 +143,14 @@
                                 <td>@contract.Category</td>
                                 <td>@contract.ContractStartDate.ToShortDateString()</td>
                                 <td>@contract.ContractEndDate.ToShortDateString()</td>
-                                <td class="text-center">
-                                    @if (User.IsInRole("Admin"))
-                                    {
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <td class="text-center">
                                         <a class="bi bi-pencil-square btn btn-sm btn-warning" asp-action="EditSupplierContract" asp-route-id="@contract.Id">Edit</a>
-                                    }
-
-                                    @* <a class="bi-card-list btn-sm btn-info" asp-action="SupplierContractDetails" asp-route-id="@contract.Id">Details</a> *@
-
-                                    @if (User.IsInRole("Admin"))
-                                    {
+                                        @* <a class="bi-card-list btn-sm btn-info" asp-action="SupplierContractDetails" asp-route-id="@contract.Id">Details</a> *@
                                         <a class="bi bi-trash btn btn-sm btn-danger" asp-action="DeleteSupplierContract" asp-route-id="@contract.Id">Delete</a>
-                                    }
-                                </td>
+                                    </td>
+                                }
                             </tr>
                             i++;
                         }
@@ -160,11 +158,12 @@
                     else
                     {
                         <tr>
-                            <td colspan="6" class="text-center">No supplier contracts found.</td>
+                            <td colspan="@(User.IsInRole("Admin") ? 6 : 5)" class="text-center">No supplier contracts found.</td>
                         </tr>
                     }
                 </tbody>
             </table>
+
         </div>
 
     </div>
