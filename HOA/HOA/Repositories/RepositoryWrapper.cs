@@ -90,6 +90,8 @@ namespace HOA.Repositories
                     _notification = new NotificationRepository(_context);
                 }
                 return _notification;
+            }
+        }
 
         public IIncidentsRepository IncidentsRepository
         {
