@@ -4,5 +4,160 @@
     ViewData["Title"] = "Confirm email";
 }
 
-<h1>@ViewData["Title"]</h1>
-<partial name="_StatusMessage" model="Model.StatusMessage" />
+<style>
+    .register-container {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-image: url('/Images/login_bg.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        padding: 20px;
+        position: relative;
+    }
+
+        .register-container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 1;
+        }
+
+    .register-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+        max-width: 600px;
+        width: 100%;
+        position: relative;
+        z-index: 2;
+    }
+
+    .register-content {
+        padding: 40px;
+        position: relative;
+        z-index: 1;
+        text-align: center;
+    }
+
+    .register-title {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #333;
+        font-weight: 600;
+    }
+
+    .confirmation-section {
+        background: rgba(255, 255, 255, 0.8);
+        padding: 30px;
+        border-radius: 15px;
+        margin-bottom: 20px;
+        backdrop-filter: blur(5px);
+    }
+
+    .confirmation-icon {
+        font-size: 4rem;
+        color: #28a745;
+        margin-bottom: 20px;
+    }
+
+    .confirmation-message {
+        font-size: 1.1rem;
+        color: #555;
+        line-height: 1.6;
+        margin-bottom: 20px;
+    }
+
+    .status-message {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+        backdrop-filter: blur(5px);
+    }
+
+    .btn-primary {
+        border-radius: 10px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        background: linear-gradient(45deg, #007bff, #0056b3);
+        border: none;
+        padding: 12px 30px;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+            text-decoration: none;
+        }
+
+    .btn-outline-secondary {
+        border-radius: 10px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        padding: 12px 30px;
+        text-decoration: none;
+        display: inline-block;
+        margin-top: 15px;
+    }
+
+        .btn-outline-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(108, 117, 125, 0.2);
+            text-decoration: none;
+        }
+
+    .docs-link {
+        color: #007bff;
+        text-decoration: underline;
+        font-weight: 500;
+    }
+
+        .docs-link:hover {
+            color: #0056b3;
+            text-decoration: none;
+        }
+</style>
+
+<div class="register-container">
+    <div class="register-card">
+        <div class="register-content">
+            <h1 class="register-title">@ViewData["Title"]</h1>
+
+            <div class="confirmation-section">
+                <div class="confirmation-icon">
+                    <i class="fas fa-envelope-check"></i>
+                </div>
+
+                @if (!string.IsNullOrEmpty(Model.StatusMessage))
+                {
+                    <div class="status-message">
+                        <partial name="_StatusMessage" model="Model.StatusMessage" />
+                    </div>
+                }
+
+                <div class="confirmation-message">
+                    <p>Your email confirmation status will be displayed above.</p>
+                </div>
+
+                <div class="mt-4">
+                    <a href="~/" class="btn btn-outline-secondary">
+                        <i class="fas fa-home me-2"></i>
+                        Return to Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

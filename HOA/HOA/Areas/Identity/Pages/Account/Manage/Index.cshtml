@@ -5,39 +5,155 @@
     ViewData["ActivePage"] = ManageNavPages.Index;
 }
 
-<h3>@ViewData["Title"]</h3>
-<partial name="_StatusMessage" for="StatusMessage" />
-<div class="row">
-    <div class="col-md-6">
-        <form id="profile-form" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-            <div class="form-floating mb-3">
-                <input asp-for="Username" class="form-control" placeholder="Please choose your username." disabled />
-                <label asp-for="Username" class="form-label"></label>
-            </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.PhoneNumber" class="form-control" placeholder="Please enter your phone number."/>
-                <label asp-for="Input.PhoneNumber" class="form-label"></label>
-                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
-            </div>
-            <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
-        </form>
+<style>
+    .profile-content {
+        padding: 0;
+    }
+
+    .profile-header {
+        margin-bottom: 30px;
+    }
+
+    .profile-title {
+        color: #333;
+        font-weight: 600;
+        margin-bottom: 20px;
+        font-size: 2rem;
+    }
+
+    .profile-form-section {
+        background: rgba(255, 255, 255, 0.8);
+        padding: 30px;
+        border-radius: 15px;
+        margin-bottom: 25px;
+        backdrop-filter: blur(5px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .profile-roles-section {
+        background: rgba(248, 249, 250, 0.8);
+        padding: 30px;
+        border-radius: 15px;
+        backdrop-filter: blur(5px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .form-floating {
+        margin-bottom: 20px;
+    }
+
+    .form-control {
+        border-radius: 10px;
+        border: 2px solid #e9ecef;
+        transition: all 0.3s ease;
+    }
+
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+
+        .form-control:disabled {
+            background-color: rgba(248, 249, 250, 0.8);
+            border-color: #dee2e6;
+            opacity: 0.8;
+        }
+
+    .btn-primary {
+        border-radius: 10px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        background: linear-gradient(45deg, #007bff, #0056b3);
+        border: none;
+        padding: 12px 20px;
+    }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+        }
+
+    .roles-title {
+        color: #333;
+        font-weight: 600;
+        margin-bottom: 15px;
+        font-size: 1.3rem;
+    }
+
+    .roles-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+        .roles-list li {
+            background: rgba(0, 123, 255, 0.1);
+            color: #007bff;
+            padding: 8px 15px;
+            border-radius: 20px;
+            margin-bottom: 8px;
+            font-weight: 500;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+    .no-roles-message {
+        color: #6c757d;
+        font-style: italic;
+        margin: 0;
+    }
+
+    .status-message {
+        margin-bottom: 25px;
+    }
+
+</style>
+
+<div class="profile-content">
+    <div class="profile-header">
+        <h3 class="profile-title">@ViewData["Title"]</h3>
     </div>
-    <div class="mb-3">
-        <h4>Your Role(s):</h4>
-        @if (Model.Roles != null && Model.Roles.Any())
-        {
-            <ul>
-                @foreach (var role in Model.Roles)
+
+    <div class="status-message">
+        <partial name="_StatusMessage" for="StatusMessage" />
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="profile-form-section">
+                <form id="profile-form" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Username" class="form-control" placeholder="Please choose your username." disabled />
+                        <label asp-for="Username" class="form-label"></label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.PhoneNumber" class="form-control" placeholder="Please enter your phone number." />
+                        <label asp-for="Input.PhoneNumber" class="form-label"></label>
+                        <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                    </div>
+                    <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="profile-roles-section">
+                <h4 class="roles-title">Your Role(s):</h4>
+                @if (Model.Roles != null && Model.Roles.Any())
                 {
-                    <li>@role</li>
+                    <ul class="roles-list">
+                        @foreach (var role in Model.Roles)
+                        {
+                            <li>@role</li>
+                        }
+                    </ul>
                 }
-            </ul>
-        }
-        else
-        {
-            <p>No roles assigned.</p>
-        }
+                else
+                {
+                    <p class="no-roles-message">No roles assigned.</p>
+                }
+            </div>
+        </div>
     </div>
 </div>
 
