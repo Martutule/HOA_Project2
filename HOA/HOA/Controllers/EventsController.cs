@@ -26,20 +26,33 @@ namespace HOA.Controllers
         }
 
         // GET: Events
-        public IActionResult Index(string searchQuery)
+        public IActionResult Index(string searchQuery, string sortOrder = "asc")
         {
             ViewData["SearchQuery"] = searchQuery;
-            var events = string.IsNullOrEmpty(searchQuery)
-                ? _eventsService.GetAllEvents()
-                : _eventsService.SearchEventsByEventName(searchQuery);
+            ViewData["SortOrder"] = sortOrder;
+
+            IEnumerable<Event> events;
+
+            if (string.IsNullOrEmpty(searchQuery))
+            {
+                bool ascending = sortOrder?.ToLower() != "desc";
+                events = _eventsService.SortEventsByDate(ascending);
+            }
+            else
+            {
+                events = _eventsService.SearchEventsByEventName(searchQuery);
+            }
+
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var joinedEvents = _context.EventParticipants
                 .Where(ep => ep.UserId == userId)
                 .Select(ep => ep.EventId)
                 .ToHashSet();
+
             ViewBag.JoinedEvents = joinedEvents;
             return View(events);
         }
+
 
         // GET: Events/Details/5
         public IActionResult Details(int? id)

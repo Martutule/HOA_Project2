@@ -45,5 +45,15 @@ namespace HOA.Services
         {
             return _repositoryWrapper.EventsRepository.FindByCondition(p => p.EventName.ToLower().Contains(name.ToLower().Trim()));
         }
+
+        public IEnumerable<Event> SortEventsByDate(bool ascending = true)
+        {
+            var events = _repositoryWrapper.EventsRepository.FindAll();
+
+            return ascending
+                ? events.OrderBy(e => e.Date)
+                : events.OrderByDescending(e => e.Date);
+        }
+
     }
 }

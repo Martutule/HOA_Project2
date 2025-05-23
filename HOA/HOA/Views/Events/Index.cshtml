@@ -88,6 +88,15 @@
             }
         </div>
 
+        
+        <a class="btn btn-outline-secondary ms-2 mt-2 mt-sm-0"
+           asp-action="Index"
+           asp-route-searchQuery="@ViewData["SearchQuery"]"
+           asp-route-sortOrder="@(ViewData["SortOrder"]?.ToString() == "asc" ? "desc" : "asc")">
+            Sort by Date (@(ViewData["SortOrder"]?.ToString() == "asc" ? "asc" : "desc"))
+        </a>
+    
+
         <div class="row g-4">
             @foreach (var item in Model)
             {

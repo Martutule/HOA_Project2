@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HOA.Migrations
 {
     /// <inheritdoc />
-    public partial class MigrationPls : Migration
+    public partial class WorkingMig : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

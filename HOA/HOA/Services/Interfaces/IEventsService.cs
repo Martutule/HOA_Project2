@@ -10,5 +10,6 @@ namespace HOA.Services.Interfaces
         void DeleteEvent(int id);
         IEnumerable<Event> GetAllEvents();
         IEnumerable<Event> SearchEventsByEventName(string name);
+        public IEnumerable<Event> SortEventsByDate(bool ascending);
     }
 }

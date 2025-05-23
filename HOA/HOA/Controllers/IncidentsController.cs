@@ -10,10 +10,12 @@ namespace HOA.Controllers
     public class IncidentsController : Controller
     {
         private IIncidentsService _incidentsService;
+        private readonly INotificationService _notificationService;
 
-        public IncidentsController(IIncidentsService incidentsService)
+        public IncidentsController(IIncidentsService incidentsService, INotificationService notificationService)
         {
             _incidentsService = incidentsService;
+            _notificationService = notificationService;
         }
 
         // GET: Incidents
@@ -74,6 +76,13 @@ namespace HOA.Controllers
             {
                 _incidentsService.AddIncident(incident);
                 TempData["ConfirmationMessage"] = "Incident reported successfully. Thank you for your submission.";
+
+                _notificationService.CreateNotification(new Notification
+                {
+                    Message = $"New incident: {incident.Title.Substring(0, Math.Min(6, incident.Title.Length))}...",
+                    Link = Url.Action("Details", "Incidents", new { id = incident.Id }),
+                    Timestamp = DateTime.Now
+                });
                 return RedirectToAction(nameof(Index));
             }
             return View(incident);
