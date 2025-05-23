@@ -50,32 +50,45 @@
                     <div class="row">
                         <div class="col-md-12">
                             <h4 class="mb-3">Payment Timeline</h4>
-
                             <ul class="list-group mb-4">
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
                                     <div>
                                         <span class="fw-bold">Created</span>
                                         <p class="mb-0 text-muted">Payment record created</p>
                                     </div>
-                                    <span>@Model.PaymentDate.AddDays(-3).ToString("MMM dd")</span>
+                                    <span>
+                                        @Model.PaymentDate.AddDays(-3).ToString("MMM dd, yyyy")
+                                    </span>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
                                     <div>
                                         <span class="fw-bold">Payment Date</span>
                                         <p class="mb-0 text-muted">Date payment was processed</p>
                                     </div>
-                                    <span>@Model.PaymentDate.ToString("MMM dd")</span>
+                                    <span>
+                                        @Model.PaymentDate.ToString("MMM dd, yyyy")
+                                    </span>
                                 </li>
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <li class="list-group-item d-flex justify-content-between align-items-center @(Model.Status == "Paid" ? "list-group-item-success" : Model.Status == "Pending" ? "list-group-item-warning" : Model.Status == "Partial" ? "list-group-item-info" : "list-group-item-danger")">
                                     <div>
-                                        <span class="fw-bold">Last Updated</span>
-                                        <p class="mb-0 text-muted">Last status update</p>
+                                        <span class="fw-bold">Status: @Model.Status</span>
+                                        <p class="mb-0 text-muted">
+                                            @(
+                                                Model.Status == "Paid" ? "Payment completed" :
+                                                Model.Status == "Partial" ? "Partial payment received" :
+                                                Model.Status == "Pending" ? "Awaiting payment" :
+                                                "Payment failed or canceled"
+                                                )
+                                        </p>
                                     </div>
-                                    <span>@DateTime.Now.ToString("MMM dd")</span>
+                                    <span>
+                                        @DateTime.Now.ToString("MMM dd, yyyy")
+                                    </span>
                                 </li>
                             </ul>
                         </div>
                     </div>
+
 
                     <div class="d-flex justify-content-between mt-4">
                         <a asp-action="Index" class="btn btn-secondary">Back to List</a>
