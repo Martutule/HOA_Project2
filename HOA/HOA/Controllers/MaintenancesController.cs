@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using HOA.Models;
 using HOA.Services.Interfaces;
+using HOA.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 
 namespace HOA.Controllers
@@ -9,11 +10,13 @@ namespace HOA.Controllers
     [Authorize]
     public class MaintenancesController : Controller
     {
-        private IMaintenanceService _maintenanceService;
+        private readonly IMaintenanceService _maintenanceService;
+        private readonly ISupplierContractService _supplierContractService;
 
-        public MaintenancesController(IMaintenanceService maintenanceService)
+        public MaintenancesController(IMaintenanceService maintenanceService, ISupplierContractService supplierContractService)
         {
             _maintenanceService = maintenanceService;
+            _supplierContractService = supplierContractService;
         }
 
         // GET: Maintenances
@@ -23,7 +26,16 @@ namespace HOA.Controllers
             var maintenances = string.IsNullOrEmpty(searchQuery)
                 ? _maintenanceService.GetAllMaintenance()
                 : _maintenanceService.SearchMaintenanceByTaskName(searchQuery);
-            return View(maintenances);
+
+            var supplierContracts = _supplierContractService.GetAllContracts();
+
+            var viewModel = new MaintenanceIndexViewModel
+            {
+                Maintenances = maintenances,
+                SupplierContracts = supplierContracts
+            };
+
+            return View(viewModel);
         }
 
         // GET: Maintenances/Details/5
@@ -53,8 +65,6 @@ namespace HOA.Controllers
 
         [Authorize(Roles = "Admin")]
         // POST: Maintenances/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create([Bind("Id,TaskName,AssignedPersonnel,DueDate,Status")] Maintenance maintenance)
@@ -77,7 +87,7 @@ namespace HOA.Controllers
             }
 
             var maintenance = _maintenanceService.GetMaintenanceById((int)id);
-            
+
             if (maintenance == null)
             {
                 return NotFound();
@@ -87,8 +97,6 @@ namespace HOA.Controllers
 
         [Authorize(Roles = "Admin")]
         // POST: Maintenances/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, [Bind("Id,TaskName,AssignedPersonnel,DueDate,Status")] Maintenance maintenance)
@@ -130,7 +138,7 @@ namespace HOA.Controllers
             }
 
             var maintenance = _maintenanceService.GetMaintenanceById((int)id);
-            
+
             if (maintenance == null)
             {
                 return NotFound();
@@ -146,7 +154,7 @@ namespace HOA.Controllers
         public IActionResult DeleteConfirmed(int id)
         {
             var maintenance = _maintenanceService.GetMaintenanceById(id);
-            
+
             if (maintenance != null)
             {
                 _maintenanceService.DeleteMaintenance(id);
@@ -158,6 +166,100 @@ namespace HOA.Controllers
         private bool MaintenanceExists(int id)
         {
             return _maintenanceService.GetMaintenanceById(id) != null;
+        }
+
+        // --- Supplier Contract CRUD actions (optional, for completeness) ---
+
+        [Authorize(Roles = "Admin")]
+        // GET: Maintenances/CreateSupplierContract
+        public IActionResult CreateSupplierContract()
+        {
+            return View();
+        }
+
+        [Authorize(Roles = "Admin")]
+        // POST: Maintenances/CreateSupplierContract
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult CreateSupplierContract([Bind("Id,SupplierName,Category,ContractStartDate,ContractEndDate")] SupplierContract contract)
+        {
+            if (ModelState.IsValid)
+            {
+                _supplierContractService.AddContract(contract);
+                return RedirectToAction(nameof(Index));
+            }
+            return View(contract);
+        }
+
+        [Authorize(Roles = "Admin")]
+        // GET: Maintenances/EditSupplierContract/5
+        public IActionResult EditSupplierContract(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var contract = _supplierContractService.GetContractById((int)id);
+
+            if (contract == null)
+            {
+                return NotFound();
+            }
+            return View(contract);
+        }
+
+        [Authorize(Roles = "Admin")]
+        // POST: Maintenances/EditSupplierContract/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditSupplierContract(int id, [Bind("Id,SupplierName,Category,ContractStartDate,ContractEndDate")] SupplierContract contract)
+        {
+            if (id != contract.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                _supplierContractService.UpdateContract(contract);
+                return RedirectToAction(nameof(Index));
+            }
+            return View(contract);
+        }
+
+        [Authorize(Roles = "Admin")]
+        // GET: Maintenances/DeleteSupplierContract/5
+        public IActionResult DeleteSupplierContract(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var contract = _supplierContractService.GetContractById((int)id);
+
+            if (contract == null)
+            {
+                return NotFound();
+            }
+            return View(contract);
+        }
+
+        [Authorize(Roles = "Admin")]
+        // POST: Maintenances/DeleteSupplierContract/5
+        [HttpPost, ActionName("DeleteSupplierContract")]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteSupplierContractConfirmed(int id)
+        {
+            var contract = _supplierContractService.GetContractById(id);
+
+            if (contract != null)
+            {
+                _supplierContractService.DeleteContract(id);
+            }
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

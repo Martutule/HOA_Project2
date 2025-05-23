@@ -12,6 +12,9 @@ namespace HOA.Repositories
         private IAnnouncementsRepository _announcements;
         private IEventsRepository _events;
         private INotificationRepository _notification;
+        private IIncidentsRepository _incidents;
+        private ISupplierContractRepository _supplierContract;
+
 
         public RepositoryWrapper(HOADbContext context)
         {
@@ -87,10 +90,32 @@ namespace HOA.Repositories
                     _notification = new NotificationRepository(_context);
                 }
                 return _notification;
+
+        public IIncidentsRepository IncidentsRepository
+        {
+            get
+            {
+                if (_incidents == null)
+                {
+                    _incidents = new IncidentsRepository(_context);
+                }
+                return _incidents;
             }
         }
 
 
+        public ISupplierContractRepository SupplierContractRepository
+        {
+            get
+            {
+                if (_supplierContract == null)
+                {
+                    _supplierContract = new SupplierContractRepository(_context);
+                }
+                return _supplierContract;
+            }
+        }
+       
         public void Save()
         {
             _context.SaveChanges();

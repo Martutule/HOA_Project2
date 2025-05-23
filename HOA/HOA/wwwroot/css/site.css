@@ -247,3 +247,115 @@ body {
     background-color: #fce4ec; /* Pale Pink */
     border-color: #f8bbd0;
 }
+
+
+/* Incidents Page Styles */
+.incident-card {
+    background-color: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+    .incident-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .incident-card .card-title {
+        color: #333333;
+        font-weight: 600;
+    }
+
+    .incident-card .card-subtitle {
+        font-size: 0.9rem;
+    }
+
+    .incident-card .card-text {
+        color: #555555;
+    }
+
+    .incident-card .card-link {
+        color: #007BFF;
+        text-decoration: none;
+    }
+
+    .incident-card .card-link:hover {
+        text-decoration: underline;
+    }
+
+/* Different background colors for each incident */
+.incident-bg-1 {
+    background-color: #ffebee; /* Pale Red */
+    border-color: #ffcdd2;
+}
+
+.incident-bg-2 {
+    background-color: #fff8e1; /* Pale Amber */
+    border-color: #ffecb3;
+}
+
+.incident-bg-3 {
+    background-color: #f3e5f5; /* Pale Purple */
+    border-color: #e1bee7;
+}
+
+.incident-bg-4 {
+    background-color: #e8f5e8; /* Pale Light Green */
+    border-color: #c8e6c9;
+}
+
+/* Status badge styling for incidents */
+.incident-card .badge {
+    font-size: 0.75rem;
+    padding: 0.375rem 0.75rem;
+}
+
+/* Icon styling for incident cards */
+.incident-card .bi {
+    font-size: 0.875rem;
+    margin-right: 0.25rem;
+}
+
+/* Image styling for incident forms and details */
+.incident-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 0.375rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* File input styling for incident forms */
+.form-control[type="file"] {
+    border: 2px dashed #dee2e6;
+    padding: 0.75rem;
+    background-color: #f8f9fa;
+    transition: border-color 0.15s ease-in-out;
+}
+
+    .form-control[type="file"]:hover {
+        border-color: #0d6efd;
+        background-color: #e7f1ff;
+    }
+
+/* Status-specific styling */
+.status-open {
+    color: #dc3545;
+    font-weight: 600;
+}
+
+.status-in-progress {
+    color: #fd7e14;
+    font-weight: 600;
+}
+
+.status-resolved {
+    color: #198754;
+    font-weight: 600;
+}
+
+.status-closed {
+    color: #6c757d;
+    font-weight: 600;
+}

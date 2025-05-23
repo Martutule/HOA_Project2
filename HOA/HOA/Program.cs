@@ -5,15 +5,23 @@ using HOA.Services;
 using HOA.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddRoles<IdentityRole>()
-    .AddEntityFrameworkStores<HOADbContext>();
+builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+{
+    options.SignIn.RequireConfirmedAccount = true;
+    options.Lockout.AllowedForNewUsers = true;
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1);
+    options.Lockout.MaxFailedAccessAttempts = 5;
+})
+.AddRoles<IdentityRole>()
+.AddEntityFrameworkStores<HOADbContext>();
+
 
 builder.Services.AddDbContext<HOADbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -26,16 +34,22 @@ builder.Services.AddScoped<IMaintenanceService, MaintenanceService>();
 builder.Services.AddScoped<IAnnouncementsService, AnnouncementsService>();
 builder.Services.AddScoped<IEventsService, EventsService>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
+builder.Services.AddScoped<IIncidentsService, IncidentsService>();
+builder.Services.AddScoped<ISupplierContractService, SupplierContractService>();
 
-
+builder.Services.AddScoped<ISupplierContractRepository, SupplierContractRepository>();
 builder.Services.AddScoped<IResidentsRepository, ResidentsRepository>();
 builder.Services.AddScoped<IPaymentsRepository, PaymentsRepository>();
 builder.Services.AddScoped<IMaintenanceRepository, MaintenanceRepository>();
 builder.Services.AddScoped<IAnnouncementsRepository, AnnouncementsRepository>();
 builder.Services.AddScoped<IEventsRepository, EventsRepository>();
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
+builder.Services.AddScoped<IIncidentsRepository, IncidentsRepository>();
 
 builder.Services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
+
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 builder.Services.ConfigureApplicationCookie(options =>
 {

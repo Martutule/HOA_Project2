@@ -17,8 +17,25 @@ namespace HOA.Models
         public DbSet<Event> Events { get; set; }
         public DbSet<Maintenance> Maintenances { get; set; }
         public DbSet<Announcement> Announcements { get; set; }
-        // Remove DbSet<User> if using IdentityUser for authentication
+        public DbSet<Incident> Incidents { get; set; }
         public DbSet<Notification> Notifications { get; set; }
+        public DbSet<SupplierContract> SupplierContracts { get; set; }
+        public DbSet<EventParticipant> EventParticipants { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder); // Important for Identity
+
+            // Configure the Event relationship instead
+            modelBuilder.Entity<EventParticipant>()
+                .HasOne(ep => ep.Event)
+                .WithMany()
+                .HasForeignKey(ep => ep.EventId);
+
+            // Optional: Configure the foreign key to IdentityUser without navigation property
+            modelBuilder.Entity<EventParticipant>()
+                .HasIndex(ep => new { ep.EventId, ep.UserId })
+                .IsUnique(); // Prevent duplicate participations
+        }
     }
 }

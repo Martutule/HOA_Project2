@@ -4,6 +4,7 @@ using HOA.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HOA.Migrations
 {
     [DbContext(typeof(HOADbContext))]
-    partial class HOADbContextModelSnapshot : ModelSnapshot
+    [Migration("20250522202903_JoinButton")]
+    partial class JoinButton
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -82,64 +85,29 @@ namespace HOA.Migrations
 
                     b.ToTable("Events");
                 });
-modelBuilder.Entity("HOA.Models.Incident", b =>
-{
-    b.Property<int>("Id")
-        .ValueGeneratedOnAdd()
-        .HasColumnType("int");
 
-    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+            modelBuilder.Entity("HOA.Models.EventParticipant", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-    b.Property<DateOnly>("Date")
-        .HasColumnType("date");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-    b.Property<string>("Description")
-        .IsRequired()
-        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("EventId")
+                        .HasColumnType("int");
 
-    b.Property<string>("ImagePath")
-        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
-    b.Property<string>("Location")
-        .IsRequired()
-        .HasColumnType("nvarchar(max)");
+                    b.HasKey("Id");
 
-    b.Property<string>("Status")
-        .IsRequired()
-        .HasColumnType("nvarchar(max)");
+                    b.HasIndex("EventId", "UserId")
+                        .IsUnique();
 
-    b.Property<string>("Title")
-        .IsRequired()
-        .HasColumnType("nvarchar(max)");
-
-    b.HasKey("Id");
-
-    b.ToTable("Incidents");
-});
-
-modelBuilder.Entity("HOA.Models.EventParticipant", b =>
-{
-    b.Property<int>("Id")
-        .ValueGeneratedOnAdd()
-        .HasColumnType("int");
-
-    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-    b.Property<int>("EventId")
-        .HasColumnType("int");
-
-    b.Property<string>("UserId")
-        .IsRequired()
-        .HasColumnType("nvarchar(450)");
-
-    b.HasKey("Id");
-
-    b.HasIndex("EventId", "UserId")
-        .IsUnique();
-
-    b.ToTable("EventParticipants");
-});
-
+                    b.ToTable("EventParticipants");
+                });
 
             modelBuilder.Entity("HOA.Models.Maintenance", b =>
                 {
@@ -167,30 +135,6 @@ modelBuilder.Entity("HOA.Models.EventParticipant", b =>
                     b.HasKey("Id");
 
                     b.ToTable("Maintenances");
-                });
-
-            modelBuilder.Entity("HOA.Models.Notification", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Link")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Message")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Timestamp")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("HOA.Models.Payment", b =>
