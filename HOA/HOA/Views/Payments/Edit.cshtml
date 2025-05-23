@@ -27,7 +27,9 @@
                             <div class="col-md-6">
                                 <div class="form-group mb-3">
                                     <label asp-for="Apartment" class="form-label fw-bold"></label>
-                                    <input asp-for="Apartment" class="form-control" placeholder="Apartment number" />
+                                    <select asp-for="Apartment" class="form-control" asp-items="@(new SelectList(ViewBag.Apartments, Model.Apartment))">
+                                        <option value="">-- Select Apartment --</option>
+                                    </select>
                                     <span asp-validation-for="Apartment" class="text-danger"></span>
                                 </div>
                             </div>

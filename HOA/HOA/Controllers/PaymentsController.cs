@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using HOA.Models;
 using HOA.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using HOA.Repositories.Interfaces;
 
 namespace HOA.Controllers
 {
@@ -10,10 +11,12 @@ namespace HOA.Controllers
     public class PaymentsController : Controller
     {
         private IPaymentsService _paymentsService;
+        private readonly IRepositoryWrapper _repositoryWrapper;
 
-        public PaymentsController(IPaymentsService paymentsService)
+        public PaymentsController(IPaymentsService paymentsService, IRepositoryWrapper repositoryWrapper)
         {
             _paymentsService = paymentsService;
+            _repositoryWrapper = repositoryWrapper;
         }
 
         // GET: Payments
@@ -80,6 +83,14 @@ namespace HOA.Controllers
         // GET: Payments/Create
         public IActionResult Create()
         {
+            var apartments = _repositoryWrapper.ResidentsRepository
+            .FindAll()
+            .Select(r => r.Apartment)
+            .Distinct()
+            .OrderBy(a => a)
+            .ToList();
+
+            ViewBag.Apartments = apartments;
             return View();
         }
 
@@ -96,6 +107,14 @@ namespace HOA.Controllers
                 _paymentsService.AddPayment(payment);
                 return RedirectToAction(nameof(Index));
             }
+            // Repopulate dropdown on error
+            var apartments = _repositoryWrapper.ResidentsRepository
+                .FindAll()
+                .Select(r => r.Apartment)
+                .Distinct()
+                .OrderBy(a => a)
+                .ToList();
+            ViewBag.Apartments = apartments;
             return View(payment);
         }
 
@@ -114,6 +133,14 @@ namespace HOA.Controllers
             {
                 return NotFound();
             }
+            // Fetch apartments for dropdown
+            var apartments = _repositoryWrapper.ResidentsRepository
+                .FindAll()
+                .Select(r => r.Apartment)
+                .Distinct()
+                .OrderBy(a => a)
+                .ToList();
+            ViewBag.Apartments = apartments;
             return View(payment);
         }
 
@@ -149,7 +176,18 @@ namespace HOA.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+
+            // Repopulate dropdown if validation fails
+            var apartments = _repositoryWrapper.ResidentsRepository
+                .FindAll()
+                .Select(r => r.Apartment)
+                .Distinct()
+                .OrderBy(a => a)
+                .ToList();
+            ViewBag.Apartments = apartments;
+
             return View(payment);
+
         }
 
         [Authorize(Roles = "Admin")]
