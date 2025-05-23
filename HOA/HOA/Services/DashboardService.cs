@@ -36,6 +36,7 @@ namespace HOA.Services
             // Get all notifications, ordered by Id (latest first)
             var notifications = _repositoryWrapper.NotificationRepository.FindAll()
                 .OrderByDescending(n => n.Id)
+                .Take(5)
                 .ToList();
 
             // Create and return the dashboard object

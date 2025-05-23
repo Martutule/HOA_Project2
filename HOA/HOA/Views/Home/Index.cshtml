@@ -42,11 +42,18 @@
             {
                 @foreach (var note in Model.Notifications.OrderByDescending(n => n.Id))
                 {
-                    <li>
-                        <a class="dropdown-item" href="@note.Link">
-                            <div><strong>@note.Message</strong></div>
-                            <small class="text-muted">@note.Timestamp.ToString("g")</small>
-                        </a>
+                    <li class="d-flex justify-content-between align-items-start px-2 py-2 border-bottom">
+                        <div class="flex-grow-1 me-2">
+                            <a class="text-decoration-none text-dark" href="@note.Link">
+                                <div><strong>@note.Message</strong></div>
+                                <small class="text-muted">@note.Timestamp.ToString("g")</small>
+                            </a>
+                        </div>
+                        <form method="post" asp-controller="Notifications" asp-action="Delete" asp-route-id="@note.Id" class="m-0 p-0">
+                            <button type="submit" class="btn btn-link text-danger p-0" title="Delete notification">
+                                <i class="bi bi-trash-fill"></i>
+                            </button>
+                        </form>
                     </li>
                 }
             }
@@ -56,9 +63,6 @@
             }
         </ul>
     </div>
-
-
-
 
     <!-- Main Dashboard Content -->
     <main class="container">

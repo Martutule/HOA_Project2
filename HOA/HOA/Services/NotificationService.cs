@@ -24,7 +24,7 @@ namespace HOA.Services
                 .ToList();
         }
 
-        // Since there is no Id, this method cannot find by id — remove or modify accordingly
+        
         public Notification GetNotificationById(int id)
         {
             // You can either throw NotImplementedException or remove this method
@@ -38,10 +38,9 @@ namespace HOA.Services
             _repositoryWrapper.Save();
         }
 
-        // Update an existing notification — without Id, you need another way to identify which one to update
+        // Update an existing notification 
         public void UpdateNotification(Notification notification)
         {
-            // This will work only if your repository implementation supports update without Id, otherwise adjust accordingly
             _repositoryWrapper.NotificationRepository.Update(notification);
             _repositoryWrapper.Save();
         }

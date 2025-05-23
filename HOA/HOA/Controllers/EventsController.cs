@@ -62,10 +62,9 @@ namespace HOA.Controllers
             {
                 _eventsService.AddEvent(@event);
 
-                // ⚠ Ensure event has an ID before generating link (assumes ID is assigned on save)
                 _notificationService.CreateNotification(new Notification
                 {
-                    Message = $"New event created: {@event.EventName}",
+                    Message = $"New event: {@event.EventName.Substring(0, Math.Min(6, @event.EventName.Length))}...",
                     Link = Url.Action("Details", "Events", new { id = @event.Id }),
                     Timestamp = DateTime.Now
                 });
@@ -149,7 +148,7 @@ namespace HOA.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        // POST: Events/Delete/5
+        // POST: Events/Delete
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
