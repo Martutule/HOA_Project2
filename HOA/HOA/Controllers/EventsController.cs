@@ -62,7 +62,7 @@ namespace HOA.Controllers
                 return NotFound();
             }
 
-            var @event = _eventsService.GetEventById((int) id);
+            var @event = _eventsService.GetEventById((int)id);
 
             if (@event == null)
             {
@@ -110,7 +110,7 @@ namespace HOA.Controllers
                 return NotFound();
             }
 
-            var @event = _eventsService.GetEventById((int) id);
+            var @event = _eventsService.GetEventById((int)id);
 
             if (@event == null)
             {
@@ -163,7 +163,7 @@ namespace HOA.Controllers
                 return NotFound();
             }
 
-            var @event = _eventsService.GetEventById((int) id);
+            var @event = _eventsService.GetEventById((int)id);
 
             if (@event == null)
             {
