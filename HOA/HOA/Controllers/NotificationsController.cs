@@ -75,15 +75,6 @@ namespace HOA.Controllers
             return View(notification);
         }
 
-        //// GET: Notifications/Delete/5
-        //public IActionResult Delete(int id)
-        //{
-        //    var notification = _notificationService.GetNotificationById(id);
-        //    if (notification == null)
-        //        return NotFound();
-
-        //    return View(notification);
-        //}
 
         // Used for deleting directly via trash icon
         [HttpPost]
@@ -94,13 +85,5 @@ namespace HOA.Controllers
             return Redirect(Request.Headers["Referer"].ToString());
         }
 
-        //// POST: Notifications/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public IActionResult DeleteConfirmed(int id)
-        //{
-        //    _notificationService.DeleteNotification(id);
-        //    return RedirectToAction(nameof(Index));
-        //}
     }
 }
