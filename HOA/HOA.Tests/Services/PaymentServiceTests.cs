@@ -4,7 +4,7 @@ using HOA.Services;
 using Moq;
 using System.Linq.Expressions;
 
-namespace HOA.Tests
+namespace HOA.Tests.Services
 {
     public class PaymentsServiceTests
     {

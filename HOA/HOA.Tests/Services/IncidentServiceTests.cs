@@ -8,7 +8,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using Xunit;
 
-namespace HOA.Tests
+namespace HOA.Tests.Services
 {
     public class IncidentsServiceTests
     {
